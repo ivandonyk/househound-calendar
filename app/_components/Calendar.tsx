@@ -15,7 +15,6 @@ const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
                 weekends={false}
                 events={bookings?.map(booking => ({ title: booking.title, start: new Date(booking.date) })) || []}
                 height="100%"
-                // eventContent={renderEventContent}
             />
         </div>
     )
