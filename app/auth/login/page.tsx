@@ -1,5 +1,6 @@
-import LoginForm from "./_components/LoginForm"
+import LoginForm from "@/app/auth/login/_components/LoginForm"
+import Auth from "@/app/_components/Auth"
 
 export default function Login() {
-    return <LoginForm />
+    return <Auth Element={<LoginForm />} auth={false} />
 }

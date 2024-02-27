@@ -7,12 +7,15 @@ import FormButton from "@/app/_components/FormButton"
 import FormInput from "@/app/_components/FormInput"
 import Form from "@/app/_components/Form"
 
+import { useLogin } from "@/app/_hooks/user"
+
 import { loginSchema } from "@/app/_schemas/schemas"
 
 const LoginForm = () => {
+    const { login } = useLogin()
     const router = useRouter()
 
-    const handleSubmit = (values: FormikValues) => {}
+    const handleSubmit = (values: FormikValues) => login(values.email, values.password)
 
     return (
         <Form

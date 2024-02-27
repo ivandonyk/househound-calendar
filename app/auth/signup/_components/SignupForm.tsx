@@ -7,12 +7,15 @@ import FormButton from "@/app/_components/FormButton"
 import FormInput from "@/app/_components/FormInput"
 import Form from "@/app/_components/Form"
 
+import { useSignup } from "@/app/_hooks/user"
+
 import { signupSchema } from "@/app/_schemas/schemas"
 
 const SignupForm = () => {
     const router = useRouter()
+    const { signUp } = useSignup()
 
-    const handleSubmit = (values: FormikValues) => {}
+    const handleSubmit = async(values: FormikValues) => signUp(values.email, values.password)
 
     return (
         <Form
