@@ -23,6 +23,8 @@ import { Role } from "@/app/_constants/constants"
 
 import { db } from "@/app/_lib/firebase/firebase"
 
+import { removeToken } from "@/app/_utils/token"
+
 export const UserContext = createContext<IUserContext>({
     user: null,
     setUser: () => {},
@@ -40,6 +42,11 @@ const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         auth.onAuthStateChanged(user => {
             if(user) {
                 setUser(user)
+            }
+            else {
+                setUser(null)
+                setRole(null)
+                removeToken()
             }
         })
     }, [])
