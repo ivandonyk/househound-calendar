@@ -2,6 +2,7 @@ import {
     DetailedHTMLProps,
     InputHTMLAttributes,
     ButtonHTMLAttributes,
+    SelectHTMLAttributes,
 } from "react"
 
 import { IBooking } from "./entities"
@@ -20,3 +21,7 @@ export interface IFormProps extends FormikConfig<FormikValues> {
 }
 
 export interface IFormButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {}
+
+export interface IFormSelectProps extends DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>  {
+    fieldName: string;
+}

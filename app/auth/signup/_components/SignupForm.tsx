@@ -7,19 +7,22 @@ import FormButton from "@/app/_components/FormButton"
 import FormInput from "@/app/_components/FormInput"
 import Form from "@/app/_components/Form"
 
-import { useSignup } from "@/app/_hooks/user"
-
 import { signupSchema } from "@/app/_schemas/schemas"
+
+import { Role } from "@/app/_constants/constants"
+
+import { useSignup } from "@/app/_hooks/user"
+import FormSelect from "@/app/_components/FormSelect"
 
 const SignupForm = () => {
     const router = useRouter()
     const { signUp } = useSignup()
 
-    const handleSubmit = async(values: FormikValues) => signUp(values.email, values.password)
+    const handleSubmit = async(values: FormikValues) => signUp(values.email, values.password, values.role)
 
     return (
         <Form
-            initialValues={{ firstName: "", lastName: "", email: "", password: "" }}
+            initialValues={{ firstName: "", lastName: "", email: "", password: "", role: Role.Client }}
             onSubmit={values => handleSubmit(values)}
             validationSchema={signupSchema}
         >
@@ -41,6 +44,7 @@ const SignupForm = () => {
                 type="password"
                 fieldName="password"
             />
+            <FormSelect fieldName="role" />
             <FormButton>Signup</FormButton>
             <button 
                 className="p-2 border-2 border-black rounded-md"

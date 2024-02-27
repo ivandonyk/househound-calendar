@@ -10,13 +10,18 @@ import {
     User, 
     getAuth,
 } from "firebase/auth"
+import { 
+    collection, 
+    query, 
+    where, 
+    getDocs 
+} from "firebase/firestore"
 
 import { IUserContext } from "@/app/_types/context"
 
 import { Role } from "@/app/_constants/constants"
 
 import { db } from "@/app/_lib/firebase/firebase"
-import { collection, query, where, getDocs } from "firebase/firestore"
 
 export const UserContext = createContext<IUserContext>({
     user: null,
@@ -33,7 +38,9 @@ const UserProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     useEffect(() => {
         const auth = getAuth()
         auth.onAuthStateChanged(user => {
-            setUser(user)
+            if(user) {
+                setUser(user)
+            }
         })
     }, [])
 
