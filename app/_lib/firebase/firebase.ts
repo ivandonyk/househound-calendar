@@ -1,6 +1,7 @@
 "use client"
 
-import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore"
+import { initializeApp } from "firebase/app"
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,4 +13,5 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
 };
 
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app)
