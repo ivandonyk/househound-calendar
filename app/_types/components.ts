@@ -4,9 +4,13 @@ import {
     ButtonHTMLAttributes,
     SelectHTMLAttributes,
 } from "react"
+import { 
+    FormikConfig, 
+    FormikValues 
+} from "formik"
+import { Moment } from "moment"
 
 import { IBooking } from "./entities"
-import { FormikConfig, FormikValues } from "formik";
 
 export interface ICalendarProps {
     bookings: IBooking[];
@@ -24,4 +28,8 @@ export interface IFormButtonProps extends DetailedHTMLProps<ButtonHTMLAttributes
 
 export interface IFormSelectProps extends DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>  {
     fieldName: string;
+}
+
+export interface IAvailabilityDateSelectProps {
+    date: Moment;
 }
