@@ -30,3 +30,7 @@ td {
 .fc-timegrid-axis {
     border: none !important;
 }
+
+.fc-highlight {
+    background-color: #00C914 !important;
+}

@@ -1,5 +1,6 @@
 "use client"
 
+import interactionPlugin from "@fullcalendar/interaction"
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/react'
 import React from "react"
@@ -13,11 +14,14 @@ const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
     return (
         <div className='w-full h-screen p-4'>
             <FullCalendar
-                plugins={[timeGridPlugin]}
+                plugins={[timeGridPlugin, interactionPlugin]}
                 initialView='timeGridWeek'
                 headerToolbar={false}
                 selectOverlap={false}
                 allDaySlot={false}
+                selectLongPressDelay={1}
+                selectable={true}
+                // select={(info) => alert('selected ' + info.startStr + ' to ' + info.endStr)}
                 slotDuration={{ hours: 1 }}
                 dayHeaderClassNames={["!p-0 !m-0"]}
                 slotLabelClassNames={['text-[18px] font-[400] text-white p-2 !border-none']}
