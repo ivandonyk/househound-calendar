@@ -13,7 +13,7 @@ export default async function Home() {
   const bookings = await getEvents()
 
   return (
-    <div className="h-screen flex justify-center items-center">
+    <div className="h-screen flex justify-center items-center bg-primary-grad">
       <Calendar bookings={bookings || []} />
     </div>
   )

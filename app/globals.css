@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+table, td, th {
+    border-style: none !important;
+}
+
+.fc-col-header-cell-cushion {
+    width: 100%;
+    padding: 0px !important;
+}
+
+.fc-scrollgrid-sync-inner {
+    padding: 0px !important;
+}
