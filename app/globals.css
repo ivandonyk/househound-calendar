@@ -34,3 +34,7 @@ td {
 .fc-highlight {
     background-color: #00C914 !important;
 }
+
+.fc-timegrid-col-events {
+    margin: 0px !important;
+}
