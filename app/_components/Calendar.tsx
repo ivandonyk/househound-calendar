@@ -16,11 +16,12 @@ const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
                 plugins={[timeGridPlugin]}
                 initialView='timeGridWeek'
                 headerToolbar={false}
+                selectOverlap={false}
                 allDaySlot={false}
                 slotDuration={{ hours: 1 }}
                 dayHeaderClassNames={["!p-0 !m-0"]}
-                slotLabelClassNames={['text-[18px] font-[400] text-white p-2']}
-                eventClassNames={["bg-transparent border-none"]}
+                slotLabelClassNames={['text-[18px] font-[400] text-white p-2 !border-none']}
+                eventClassNames={["bg-transparent border-none !shadow-none"]}
                 events={bookings?.map(booking => ({ title: booking.title, start: new Date(booking.date) })) || []}
                 slotLabelContent={props => <CalendarSlotLabel key={props.date.toLocaleString()} {...props} />}
                 eventContent={(props) => <CalendarEvent key={props.event.start?.toLocaleString()} {...props} />}

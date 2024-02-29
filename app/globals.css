@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-table, td, th {
+table, th {
     border-style: none !important;
+}
+
+td {
+    border-color: #FFFFFF !important;
 }
 
 .fc-col-header-cell-cushion {
@@ -13,4 +17,16 @@ table, td, th {
 
 .fc-scrollgrid-sync-inner {
     padding: 0px !important;
+}
+
+.fc-event-main {
+    padding: 0px !important;
+}
+
+.fc-timegrid-slot-label {
+    border: none !important;
+}
+
+.fc-timegrid-axis {
+    border: none !important;
 }
