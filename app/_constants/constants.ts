@@ -20,4 +20,5 @@ export enum Role {
 export enum Modals {
     AddAvailability,
     OptionsModal,
+    Booking,
 }

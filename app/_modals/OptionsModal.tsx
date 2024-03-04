@@ -23,7 +23,7 @@ const OptionsModal = () => {
         { 
             icon: <Image src={calendarSvg} alt="" />, 
             text: "Add appointment", 
-            onClick: () => {} 
+            onClick: () => setActiveModal(Modals.Booking)
         },
         { 
             icon: <Image src={checkTickCircleSvg} alt="" />, 
@@ -69,6 +69,7 @@ const OptionsModal = () => {
                     {options.map(option => <div
                         className="w-full flex flex-row cursor-pointer"
                         key={option.text}
+                        onClick={option.onClick}
                     >
                         <div>{option.icon}</div>
                         <div className="text-[16px] font-[400] leading-[24px] ml-[12px]">{option.text}</div>
