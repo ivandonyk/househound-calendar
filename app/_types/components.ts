@@ -1,4 +1,4 @@
-import {
+import React, {
     DetailedHTMLProps,
     InputHTMLAttributes,
     ButtonHTMLAttributes,
@@ -11,6 +11,8 @@ import {
 import { Moment } from "moment"
 
 import { IBooking } from "./entities"
+
+import { Modals } from "@/app/_constants/constants"
 
 export interface ICalendarProps {
     bookings: IBooking[];
@@ -32,4 +34,15 @@ export interface IFormSelectProps extends DetailedHTMLProps<SelectHTMLAttributes
 
 export interface IAvailabilityDateSelectProps {
     date: Moment;
+}
+
+export interface IModalLayoutProps {
+    modal: Modals;
+    children?: React.ReactNode | React.ReactNode[];
+    onClose?: () => void;
+}
+
+export interface IBackdropProps {
+    className?: string;
+    onClick?: () => void;
 }

@@ -7,9 +7,17 @@ export enum Token {
 }
 
 /**
- * This enum coontains information about role
+ * This enum contains information about role
  */
 export enum Role {
     Agent = "AGENT",
     Client = "CLIENT",
+}
+
+/**
+ * This enum contains information about modals
+ */
+export enum Modals {
+    AddAvailability,
+    OptionsModal,
 }

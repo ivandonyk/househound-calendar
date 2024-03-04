@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import { Poppins } from "next/font/google";
 import { Providers } from "./_providers/Providers";
-import Navbar from "./_components/Navbar";
 
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.css";
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-poppins',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+});
 
 export const metadata: Metadata = {
   title: "Home Calendar",
@@ -18,9 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={poppins.className}>
         <Providers>
-          <Navbar />
           {children}
         </Providers>
       </body>
