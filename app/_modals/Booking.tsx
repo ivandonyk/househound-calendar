@@ -37,7 +37,7 @@ const Booking = () => {
                 </div>
                 <input 
                     placeholder="Add header"
-                    className="border-b-[1px] border-gray-2 pb-[2px] text-[22px] leading-[33px] focus:outline-none"
+                    className="border-b-[1px] border-gray-2 pb-2 text-[22px] leading-[33px] focus:outline-none"
                 />
                 <div className="w-full relative flex items-center">
                     <div className="absolute top-[6px]">
@@ -45,7 +45,7 @@ const Booking = () => {
                     </div>
                     <input 
                         placeholder="Add notes"
-                        className="pl-[40px] w-full border-b-[1px] border-gray-2 font-[400] pb-[2px] text-[18px] leading-[27px] focus:outline-none"
+                        className="pl-[40px] w-full border-b-[1px] border-gray-2 font-[400] pb-2 text-[18px] leading-[27px] focus:outline-none"
                     />
                 </div>
                 <div className="flex flex-row gap-[13px] border-b-[1px] border-gray-2 pb-2">
