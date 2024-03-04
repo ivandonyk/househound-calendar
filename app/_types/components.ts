@@ -46,3 +46,12 @@ export interface IBackdropProps {
     className?: string;
     onClick?: () => void;
 }
+
+export interface ICalendarHeaderProps {
+    onNext?: () => void;
+    onBack?: () => void;
+    calendarDate: {
+        start: string;
+        end: string;
+    };
+}

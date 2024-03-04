@@ -3,20 +3,24 @@
 import interactionPlugin from "@fullcalendar/interaction"
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/react'
+import React, { useRef, useState } from "react"
 import moment from "moment"
-import React from "react"
 
-import { ICalendarProps } from '../_types/components'
+import { ICalendarProps } from '@/app/_types/components'
 import CalendarEvent from './CalendarEvent'
 import CalendarDayHeader from './CalendarDayHeader'
 import CalendarSlotLabel from './CalendarSlotLabel'
 import { useModalContext } from "../_context/ModalContext"
-import { useCalendarContext } from "../_context/CalendarContext"
-import { Modals } from "../_constants/constants"
+import { useCalendarContext } from "@/app/_context/CalendarContext"
+import { Modals } from "@/app/_constants/constants"
+
+import CalendarHeader from "./CalendarHeader"
 
 const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
+    const calendarRef = useRef<FullCalendar | null>(null)
     const { setActiveModal } = useModalContext()
     const { setSelectedSlots } = useCalendarContext()
+    const [calendarDate, setCalendarDate] = useState({ start: "",  end: "" })
 
     const handleSelect = (startDate: string, endDate: string) => {
         setSelectedSlots({
@@ -26,9 +30,22 @@ const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
         setActiveModal(Modals.OptionsModal)
     }
 
+    const onNext = () => {
+        const api = calendarRef.current?.getApi()
+        api?.next()
+    }
+
+    const onBack = () => {
+        const api = calendarRef.current?.getApi()
+        api?.prev()
+    }
+
     return (
         <div className='w-full h-screen p-4'>
+            <CalendarHeader onBack={onBack} onNext={onNext} calendarDate={calendarDate} />
             <FullCalendar
+                ref={calendarRef}
+                datesSet={date => setCalendarDate({ start: date.startStr, end: date.endStr })}
                 plugins={[timeGridPlugin, interactionPlugin]}
                 initialView='timeGridWeek'
                 headerToolbar={false}
