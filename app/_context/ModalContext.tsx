@@ -17,7 +17,7 @@ const ModalContext = createContext<IModalsContext>({
 export const useModalContext = () => useContext(ModalContext)
 
 const ModalsProvider: React.FC<React.PropsWithChildren> =  ({ children }) => {
-    const [activeModal, setActiveModal] = useState<ModalsEnum | null>(ModalsEnum.OptionsModal)
+    const [activeModal, setActiveModal] = useState<ModalsEnum | null>(null)
 
     return (
         <ModalContext.Provider value={{ activeModal, setActiveModal }}>
