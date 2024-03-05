@@ -49,7 +49,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
     }, [events])
 
     return (
-        <div className='w-full h-screen p-4'>
+        <div className='w-full h-full overflow-auto p-4'>
             <CalendarHeader onBack={onBack} onNext={onNext} calendarDate={calendarDate} />
             <FullCalendar
                 ref={calendarRef}

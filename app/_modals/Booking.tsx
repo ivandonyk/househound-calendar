@@ -1,9 +1,8 @@
 "use client"
 
 import classNames from "classnames"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
-import moment from "moment"
 
 import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useModalContext } from "@/app/_context/ModalContext"
@@ -55,17 +54,14 @@ const Booking = () => {
                 notes,
                 title: header,
                 uuids: [selectedUser.uid, user?.uid || ""],
-                endTime: selectedSlots.endTime.utc().toISOString(),
-                startTime: selectedSlots.startTime.utc().toISOString(),
+                endTime: selectedSlots.endTime.toISOString(),
+                startTime: selectedSlots.startTime.toISOString(),
             })
             await fetchBookings()
             setLoading(false)
             onClose()
             return
         }
-
-        console.log(selectedEvent)
-
         // Otherwise we update existing event / booking
     }
 
@@ -86,6 +82,7 @@ const Booking = () => {
                     placeholder="Add header"
                     className="border-b-[1px] border-gray-2 pb-2 text-[22px] leading-[33px] focus:outline-none"
                     onChange={e => setHeader(e.target.value)}
+                    value={header}
                 />
                 <div className="w-full relative flex items-center">
                     <div className="absolute top-[6px]">
@@ -95,6 +92,7 @@ const Booking = () => {
                         placeholder="Add notes"
                         className="pl-[40px] w-full border-b-[1px] border-gray-2 font-[400] pb-2 text-[18px] leading-[27px] focus:outline-none"
                         onChange={e => setNotes(e.target.value)}
+                        value={notes}
                     />
                 </div>
                 <div className="flex flex-row gap-[13px] border-b-[1px] border-gray-2 pb-2">
@@ -103,10 +101,10 @@ const Booking = () => {
                     </div>
                     <div className="w-full flex flex-col gap-[9px]">
                         <div className="font-[400] text-[18px] leading-[27px]">
-                            {moment(selectedSlots?.startTime).format("dddd, DD MMMM")}
+                            {selectedSlots?.startTime?.format("dddd, DD MMMM")}
                         </div>
                         <div className="font-[400] text-[14px] leading-[21px] text-gray-3">
-                            {`${moment(selectedSlots?.startTime).format("hh.mm a")} - ${moment(selectedSlots?.endTime).format("hh.mm a")}`}
+                            {`${selectedSlots?.startTime?.format("hh.mm a")} - ${selectedSlots?.endTime?.format("hh.mm a")}`}
                         </div>
                     </div>
                 </div>
