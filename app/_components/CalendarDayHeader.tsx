@@ -6,8 +6,8 @@ import moment from "moment"
 import React from "react"
 
 const CalendarDayHeader: React.FC<DayHeaderContentArg> = (props) => {
-    const isStartOfWeek = moment(props.date).isoWeekday() === 7
-    const isEndOfWeek = moment(props.date).isoWeekday() === 6
+    const isStartOfWeek = moment(props.date).isoWeekday() === 1
+    const isEndOfWeek = moment(props.date).isoWeekday() === 7
 
     return (
         <div className={classNames(

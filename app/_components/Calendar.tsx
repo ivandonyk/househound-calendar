@@ -87,6 +87,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
                 plugins={[timeGridPlugin, interactionPlugin]}
                 initialView='timeGridWeek'
                 editable
+                firstDay={1}
                 eventOverlap={false}
                 eventResize={handleResizeEvent}
                 eventDrop={handleDropEvent}
