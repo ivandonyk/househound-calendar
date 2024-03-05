@@ -51,7 +51,7 @@ const CalendarProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
                 where("uuids", "array-contains", user.uid)
             ))
             const list: IBooking[] = []
-            snapshot?.forEach(doc => list.push(doc.data() as unknown as IBooking))
+            snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IBooking), id: doc.id }))
             setEvents(list)
         } catch (error) {
             console.log(error)

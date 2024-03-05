@@ -17,11 +17,13 @@ import CalendarDayHeader from './CalendarDayHeader'
 import CalendarSlotLabel from './CalendarSlotLabel'
 import CalendarHeader from "./CalendarHeader"
 import CalendarEvent from './CalendarEvent'
+import { useUserContext } from "../_context/UserContext"
 
 const Calendar: React.FC<ICalendarProps> = () => {
     const calendarRef = useRef<FullCalendar | null>(null)
     const { setActiveModal } = useModalContext()
     const { setSelectedSlots, events } = useCalendarContext()
+    const { user } = useUserContext()
     const [calendarDate, setCalendarDate] = useState({ start: "",  end: "" })
 
     const handleSelect = (startDate: string, endDate: string) => {
@@ -43,10 +45,11 @@ const Calendar: React.FC<ICalendarProps> = () => {
     }
 
     useEffect(() => {
+        if(!events?.length || !user?.uid) return;
         const api = calendarRef.current?.getApi()
         api?.removeAllEventSources()
-        api?.addEventSource(events.map(({ id, endTime, startTime, title }) => ({ id, start: startTime, end: endTime, title })))
-    }, [events])
+        api?.addEventSource(events.map(({ endTime, startTime, title, id }) => ({ id, start: startTime, end: endTime, title })))
+    }, [events, user])
 
     return (
         <div className='w-full h-full overflow-auto p-4'>
@@ -56,6 +59,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
                 datesSet={date => setCalendarDate({ start: date.startStr, end: date.endStr })}
                 plugins={[timeGridPlugin, interactionPlugin]}
                 initialView='timeGridWeek'
+                editable
                 headerToolbar={false}
                 selectOverlap={false}
                 allDaySlot={false}

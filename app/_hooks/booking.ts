@@ -3,6 +3,8 @@
 import { 
     addDoc, 
     collection,
+    updateDoc,
+    doc,
 } from "firebase/firestore"
 import { useState } from "react"
 
@@ -40,7 +42,8 @@ export const useUpdateBooking = () => {
     const updateBooking = async(payload: IUpdateBookingPayload) => {
         try {
             setLoading(true)
-
+            const { id, ...rest } = payload
+            await updateDoc(doc(db, "bookings", `${id}`), rest)
             setLoading(false)
         } catch (error) {
             setLoading(false)

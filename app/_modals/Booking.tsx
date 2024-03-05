@@ -8,7 +8,10 @@ import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useModalContext } from "@/app/_context/ModalContext"
 import { useUserContext } from "@/app/_context/UserContext"
 
-import { useCreateBooking, useUpdateBooking } from "@/app/_hooks/booking"
+import { 
+    useCreateBooking, 
+    useUpdateBooking,
+} from "@/app/_hooks/booking"
 
 import ModalLayout from "@/app/_components/ModalLayout"
 
@@ -22,7 +25,7 @@ import notesSvg from "@/public/notes.svg"
 import clockSvg from "@/public/clock.svg"
 
 const Booking = () => {
-    const { selectedSlots, setSelectedSlots, selectedEvent, fetchBookings } = useCalendarContext()
+    const { selectedSlots, setSelectedSlots, selectedEvent, fetchBookings, setSelectedEvent } = useCalendarContext()
     const { setActiveModal } = useModalContext()
     const { users, user } = useUserContext()
     const { addBooking, isCreatingBooking } = useCreateBooking()
@@ -33,11 +36,22 @@ const Booking = () => {
     const [header, setHeader] = useState("")
     const [loading, setLoading] = useState(false)
 
+    useEffect(() => {
+        if(selectedEvent) {
+            setNotes(selectedEvent.notes)
+            setHeader(selectedEvent.title)
+            const userId = selectedEvent.uuids.find(id => id !== user?.uid)
+            const targetUser = users.find(user => user.uid === userId)
+            if(targetUser) setSelectedUser(targetUser)
+        }
+    }, [selectedEvent])
+
     const handleClose = () => {
         setSelectedSlots({ endTime: null, startTime: null })
         setNotes("")
         setHeader("")
         setSelectedUser(null)
+        setSelectedEvent(null)
     }
 
     const onClose = () => {
@@ -63,6 +77,18 @@ const Booking = () => {
             return
         }
         // Otherwise we update existing event / booking
+        setLoading(true)
+        await updateBooking({
+            id: selectedEvent.id,
+            notes,
+            title: header,
+            uuids: [selectedUser.uid, user?.uid || ""],
+            endTime: selectedEvent.endTime,
+            startTime: selectedEvent.startTime,
+        })
+        await fetchBookings()
+        setLoading(false)
+        onClose()
     }
 
     const handleUserSelect = (user: IUser) => {
@@ -101,10 +127,14 @@ const Booking = () => {
                     </div>
                     <div className="w-full flex flex-col gap-[9px]">
                         <div className="font-[400] text-[18px] leading-[27px]">
-                            {selectedSlots?.startTime?.format("dddd, DD MMMM")}
+                            {selectedEvent?.title ? 
+                            selectedSlots?.startTime?.utc().format("dddd, DD MMMM")
+                            : selectedSlots?.startTime?.format("dddd, DD MMMM")}
                         </div>
                         <div className="font-[400] text-[14px] leading-[21px] text-gray-3">
-                            {`${selectedSlots?.startTime?.format("hh.mm a")} - ${selectedSlots?.endTime?.format("hh.mm a")}`}
+                            {selectedEvent?.title ? 
+                                `${selectedSlots?.startTime?.utc().format("hh.mm a")} - ${selectedSlots?.endTime?.utc().format("hh.mm a")}`
+                            : `${selectedSlots?.startTime?.format("hh.mm a")} - ${selectedSlots?.endTime?.format("hh.mm a")}`}
                         </div>
                     </div>
                 </div>
@@ -146,7 +176,7 @@ const Booking = () => {
                         )}
                         onClick={handleClick}
                     >
-                        {isLoading ? 'loading...' : 'Create'}
+                        {isLoading ? 'loading...' : selectedEvent?.title ? 'Edit' : 'Create'}
                     </button>
                 </div>
             </div>
