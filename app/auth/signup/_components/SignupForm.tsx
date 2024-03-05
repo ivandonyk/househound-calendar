@@ -18,7 +18,7 @@ const SignupForm = () => {
     const router = useRouter()
     const { signUp } = useSignup()
 
-    const handleSubmit = async(values: FormikValues) => signUp(values.email, values.password, values.role)
+    const handleSubmit = async(values: FormikValues) => signUp(values.firstName, values.lastName, values.email, values.password, values.role)
 
     return (
         <Form

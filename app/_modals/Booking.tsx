@@ -1,15 +1,21 @@
 "use client"
 
 import classNames from "classnames"
+import { useState } from "react"
 import Image from "next/image"
 import moment from "moment"
 
 import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useModalContext } from "@/app/_context/ModalContext"
+import { useUserContext } from "@/app/_context/UserContext"
+
+import { useCreateBooking, useUpdateBooking } from "@/app/_hooks/booking"
 
 import ModalLayout from "@/app/_components/ModalLayout"
 
 import { Modals } from "@/app/_constants/constants"
+
+import { IUser } from "@/app/_types/entities"
 
 import peopleSvg from "@/public/people.svg"
 import crossSvg from "@/public/cross.svg"
@@ -17,17 +23,58 @@ import notesSvg from "@/public/notes.svg"
 import clockSvg from "@/public/clock.svg"
 
 const Booking = () => {
-    const { selectedSlots, setSelectedSlots } = useCalendarContext()
+    const { selectedSlots, setSelectedSlots, selectedEvent, fetchBookings } = useCalendarContext()
     const { setActiveModal } = useModalContext()
+    const { users, user } = useUserContext()
+    const { addBooking, isCreatingBooking } = useCreateBooking()
+    const { updateBooking, isUpdatingBooking } = useUpdateBooking()
+    const [showUsers, setShowUsers] = useState(false)
+    const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
+    const [notes, setNotes] = useState("")
+    const [header, setHeader] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const handleClose = () => {
         setSelectedSlots({ endTime: null, startTime: null })
+        setNotes("")
+        setHeader("")
+        setSelectedUser(null)
     }
 
     const onClose = () => {
         setActiveModal(null)
         handleClose()
     }
+
+    const handleClick = async() => {
+        if(!header || !selectedUser?.uid || !selectedSlots?.startTime || !selectedSlots?.endTime) return;
+        // We create a new booking if there's no selected event
+        if(!selectedEvent) {
+            setLoading(true)
+            await addBooking({
+                notes,
+                title: header,
+                uuids: [selectedUser.uid, user?.uid || ""],
+                endTime: selectedSlots.endTime.utc().toISOString(),
+                startTime: selectedSlots.startTime.utc().toISOString(),
+            })
+            await fetchBookings()
+            setLoading(false)
+            onClose()
+            return
+        }
+
+        console.log(selectedEvent)
+
+        // Otherwise we update existing event / booking
+    }
+
+    const handleUserSelect = (user: IUser) => {
+        setSelectedUser(user)
+        setShowUsers(false)
+    }
+
+    const isLoading = isCreatingBooking || isUpdatingBooking || loading
 
     return (
         <ModalLayout modal={Modals.Booking} onClose={handleClose}>
@@ -38,6 +85,7 @@ const Booking = () => {
                 <input 
                     placeholder="Add header"
                     className="border-b-[1px] border-gray-2 pb-2 text-[22px] leading-[33px] focus:outline-none"
+                    onChange={e => setHeader(e.target.value)}
                 />
                 <div className="w-full relative flex items-center">
                     <div className="absolute top-[6px]">
@@ -46,6 +94,7 @@ const Booking = () => {
                     <input 
                         placeholder="Add notes"
                         className="pl-[40px] w-full border-b-[1px] border-gray-2 font-[400] pb-2 text-[18px] leading-[27px] focus:outline-none"
+                        onChange={e => setNotes(e.target.value)}
                     />
                 </div>
                 <div className="flex flex-row gap-[13px] border-b-[1px] border-gray-2 pb-2">
@@ -61,7 +110,7 @@ const Booking = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-row gap-[13px]">
+                <div className="flex flex-row gap-[13px] relative">
                     <div className="h-full w-[25px] flex items-center justify-center">
                         <Image src={peopleSvg} alt="" />
                     </div>
@@ -69,21 +118,37 @@ const Booking = () => {
                         <input 
                             className="h-full w-full rounded-sm bg-gray-4 px-[11px] py-[14px] focus:outline-none"
                             placeholder="Add people"
+                            onFocus={() => setShowUsers(true)}
+                            value={selectedUser?.email}
                         />
                     </div>
+                    {showUsers && <div className="absolute bottom-[-40px] left-[38px] z-30 w-[80%] bg-white flex flex-col max-h-[250px] overflow-auto">
+                        {users.map(user => <div 
+                            key={user.uid}
+                            className="w-full p-2 cursor-pointer text-black hover:bg-primary-blue hover:text-white font-[500]"
+                            onClick={() => handleUserSelect(user)}
+                        >
+                            {user.email}
+                        </div>)}
+                    </div>}
                 </div>
                 <div className="w-full flex flex-row justify-end gap-4">
                     <button 
+                        disabled={isLoading}
                         className="text-black-2 font-[400] text-[16px] leading-[15px]"
                         onClick={onClose}
                     >
                         Cancel
                     </button>
-                    <button className={classNames(
-                        "w-[107px] rounded-[3px] bg-blue-1 text-white",
-                        "py-[12px] px-[26px]"
-                    )}>
-                        Create
+                    <button 
+                        disabled={isLoading}
+                        className={classNames(
+                            "w-[107px] rounded-[3px] bg-blue-1 text-white",
+                            "py-[12px] px-[26px]"
+                        )}
+                        onClick={handleClick}
+                    >
+                        {isLoading ? 'loading...' : 'Create'}
                     </button>
                 </div>
             </div>

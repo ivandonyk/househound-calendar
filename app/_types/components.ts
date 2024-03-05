@@ -14,9 +14,7 @@ import { IBooking } from "./entities"
 
 import { Modals } from "@/app/_constants/constants"
 
-export interface ICalendarProps {
-    bookings: IBooking[];
-}
+export interface ICalendarProps {}
 
 export interface ITextInputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
     fieldName: string;

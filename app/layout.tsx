@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Providers } from "./_providers/Providers";
+import Navbar from "./_components/Navbar";
 
 import "./globals.css";
 
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className}>
         <Providers>
+          <Navbar />
           {children}
         </Providers>
       </body>

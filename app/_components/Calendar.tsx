@@ -3,23 +3,25 @@
 import interactionPlugin from "@fullcalendar/interaction"
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/react'
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import moment from "moment"
 
-import { ICalendarProps } from '@/app/_types/components'
-import CalendarEvent from './CalendarEvent'
-import CalendarDayHeader from './CalendarDayHeader'
-import CalendarSlotLabel from './CalendarSlotLabel'
-import { useModalContext } from "../_context/ModalContext"
 import { useCalendarContext } from "@/app/_context/CalendarContext"
+import { useModalContext } from "@/app/_context/ModalContext"
+
 import { Modals } from "@/app/_constants/constants"
 
-import CalendarHeader from "./CalendarHeader"
+import { ICalendarProps } from '@/app/_types/components'
 
-const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
+import CalendarDayHeader from './CalendarDayHeader'
+import CalendarSlotLabel from './CalendarSlotLabel'
+import CalendarHeader from "./CalendarHeader"
+import CalendarEvent from './CalendarEvent'
+
+const Calendar: React.FC<ICalendarProps> = () => {
     const calendarRef = useRef<FullCalendar | null>(null)
     const { setActiveModal } = useModalContext()
-    const { setSelectedSlots } = useCalendarContext()
+    const { setSelectedSlots, events } = useCalendarContext()
     const [calendarDate, setCalendarDate] = useState({ start: "",  end: "" })
 
     const handleSelect = (startDate: string, endDate: string) => {
@@ -40,6 +42,12 @@ const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
         api?.prev()
     }
 
+    useEffect(() => {
+        const api = calendarRef.current?.getApi()
+        api?.removeAllEventSources()
+        api?.addEventSource(events.map(({ id, endTime, startTime, title }) => ({ id, start: startTime, end: endTime, title })))
+    }, [events])
+
     return (
         <div className='w-full h-screen p-4'>
             <CalendarHeader onBack={onBack} onNext={onNext} calendarDate={calendarDate} />
@@ -58,7 +66,6 @@ const Calendar: React.FC<ICalendarProps> = ({ bookings }) => {
                 dayHeaderClassNames={["!p-0 !m-0"]}
                 slotLabelClassNames={['text-[18px] font-[400] text-white p-2 !border-none']}
                 eventClassNames={["bg-transparent border-none !shadow-none"]}
-                events={bookings?.map(booking => ({ title: booking.title, start: new Date(booking.date) })) || []}
                 slotLabelContent={props => <CalendarSlotLabel key={props.date.toLocaleString()} {...props} />}
                 eventContent={(props) => <CalendarEvent key={props.event.start?.toLocaleString()} {...props} />}
                 dayHeaderContent={props => <CalendarDayHeader key={props.date.toISOString()} {...props} />}

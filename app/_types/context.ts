@@ -4,11 +4,14 @@ import React from "react"
 
 import { Modals, Role } from "@/app/_constants/constants"
 
+import { IBooking, IUser } from "./entities"
+
 export interface IUserContext {
     user: User | null;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     role: Role | null;
     setRole: React.Dispatch<React.SetStateAction<Role | null>>;
+    users: IUser[];
 }
 
 export interface IModalsContext {
@@ -19,6 +22,10 @@ export interface IModalsContext {
 export interface ICalendarContext {
     selectedSlots: ICalendarState | null;
     setSelectedSlots: React.Dispatch<React.SetStateAction<ICalendarState | null>>;
+    selectedEvent: IBooking | null;
+    setSelectedEvent: React.Dispatch<React.SetStateAction<IBooking | null>>;
+    events: IBooking[];
+    fetchBookings: () => Promise<void>;
 }
 
 export interface ICalendarState {

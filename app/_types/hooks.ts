@@ -1,0 +1,5 @@
+import { IBooking } from "./entities"
+
+export interface ICreateBookingPayload extends Omit<IBooking, "id"> {}
+
+export interface IUpdateBookingPayload extends Partial<Omit<IBooking, "id">> {}

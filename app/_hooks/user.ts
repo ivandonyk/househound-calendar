@@ -40,14 +40,17 @@ export const useLogin = () => {
 export const useSignup = () => {
     const { setUser } = useUserContext()
 
-    const signUp = async(email: string, password: string, role: Role) => {
+    const signUp = async(firstName: string, lastName: string, email: string, password: string, role: Role) => {
         try {
             const auth = getAuth()
             const { user } = await createUserWithEmailAndPassword(auth, email, password)
             const token = await user.getIdToken()
             await addDoc(collection(db, "users"), {
                 uid: user.uid,
-                role
+                role,
+                firstName,
+                lastName,
+                email
             })
             setToken(token)
             setUser(user)
