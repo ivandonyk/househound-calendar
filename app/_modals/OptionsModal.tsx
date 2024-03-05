@@ -11,7 +11,6 @@ import ModalLayout from "@/app/_components/ModalLayout"
 import { Modals } from "@/app/_constants/constants"
 
 import checkTickCircleSvg from "@/public/checkTickCircle.svg"
-import minusCircleSvg from "@/public/minusCircle.svg"
 import calendarSvg from "@/public/calendar.svg"
 import crossSvg from "@/public/cross.svg"
 
@@ -28,11 +27,6 @@ const OptionsModal = () => {
         { 
             icon: <Image src={checkTickCircleSvg} alt="" />, 
             text: "Add availability", 
-            onClick: () => {} 
-        },
-        { 
-            icon: <Image src={minusCircleSvg} alt="" />, 
-            text: "Add unavailability", 
             onClick: () => {} 
         },
     ]
