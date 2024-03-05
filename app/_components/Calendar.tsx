@@ -1,8 +1,9 @@
 "use client"
 
 import interactionPlugin, { 
-    EventResizeDoneArg 
+    EventResizeDoneArg
 } from "@fullcalendar/interaction"
+import { EventDropArg } from "@fullcalendar/core/index.js"
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/react'
 import React, { 
@@ -61,6 +62,15 @@ const Calendar: React.FC<ICalendarProps> = () => {
         fetchBookings()
     }
 
+    const handleDropEvent = async(eventArg: EventDropArg) => {
+        await updateBooking({
+            id: eventArg.event.id,
+            startTime: moment(eventArg.event.start).toISOString(),
+            endTime: moment(eventArg.event.end).toISOString()
+        })
+        fetchBookings()
+    }
+
     useEffect(() => {
         if(!events?.length || !user?.uid) return;
         const api = calendarRef.current?.getApi()
@@ -79,6 +89,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
                 editable
                 eventOverlap={false}
                 eventResize={handleResizeEvent}
+                eventDrop={handleDropEvent}
                 headerToolbar={false}
                 selectOverlap={false}
                 allDaySlot={false}
