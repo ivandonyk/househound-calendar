@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 td {
-    border-width: 0.7px !important;
+    border-color: #FFFFFF70 !important;
 }
 
 td:first-of-type {
