@@ -87,3 +87,7 @@ th[role='presentation'] {
 .fc-timegrid-col-events {
     margin: 0px !important;
 }
+
+.fc-day-today {
+  background-color:inherit !important;
+}
