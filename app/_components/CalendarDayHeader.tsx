@@ -11,12 +11,20 @@ const CalendarDayHeader: React.FC<DayHeaderContentArg> = (props) => {
 
     return (
         <div className={classNames(
-            "flex flex-col justify-center items-center bg-primary-blue p-0 w-full h-[90px] text-white text-[18px] font-[400]",
+            "flex flex-col items-center bg-primary-blue p-0 pt-[12px] pb-[21px] w-full h-[93px] text-white text-[18px] font-[400]",
             { "rounded-l-[10px]": isStartOfWeek },
             { "rounded-r-[10px]": isEndOfWeek }
         )}>
-            <div>{moment(props.date).format("ddd")}</div>
-            <div>{moment(props.date).format("DD")}</div>
+            <div
+                className="font-[400] text-[18px] leading-[35px] mb-auto"
+            >
+                {moment(props.date).format("ddd").toUpperCase()}
+            </div>
+            <div
+                className="font-[400] text-[18px] leading-[28px]"
+            >
+                {moment(props.date).format("DD")}
+            </div>
         </div>
     )
 }
