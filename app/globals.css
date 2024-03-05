@@ -4,10 +4,23 @@
 
 table, th {
     border-style: none !important;
+    border: none !important;
 }
 
-td {
-    border-color: #FFFFFF !important;
+.fc-scrollgrid td:last-of-type {
+    border-right: none !important;
+}
+
+.fc-scrollgrid td {
+    border-left: none !important;
+}
+
+.fc-scrollgrid td:first-of-type {
+    border-top: none !important;
+}
+
+.border-left-hide {
+    border-left: none !important;
 }
 
 .fc-col-header-cell-cushion {
