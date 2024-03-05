@@ -99,7 +99,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
                 select={(info) => handleSelect(info.startStr, info.endStr)}
                 slotDuration={{ hours: 1 }}
                 dayHeaderClassNames={["!p-0 !m-0"]}
-                slotLabelClassNames={['text-[18px] font-[400] text-white p-2 !border-none']}
+                slotLabelClassNames={['text-[18px] font-[400] p-2 !border-none text-[#FFFFFF50]']}
                 eventClassNames={["bg-transparent border-none !shadow-none"]}
                 slotLabelContent={props => <CalendarSlotLabel key={props.date.toLocaleString()} {...props} />}
                 eventContent={(props) => <CalendarEvent key={props.event.start?.toLocaleString()} {...props} />}
