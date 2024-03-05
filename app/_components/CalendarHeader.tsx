@@ -14,12 +14,12 @@ const CalendarHeader: React.FC<ICalendarHeaderProps> = ({ onBack, onNext, calend
 
     if(!calendarDate?.start || !calendarDate.end) return <></>
     return (
-        <div className="flex flex-row justify-between mb-[60px] pl-[60px]">
+        <div className="flex flex-col justify-between mb-[30px] pl-[60px]">
             <div className="flex flex-row items-center">
                 <Image src={calendarHeaderSvg} alt="" />
                 <div className="font-[500] text-[25px] leading-[25px] text-white m-[10px]">Calendar</div>
             </div>
-            <div className="flex flex-row gap-[19px] items-center">
+            <div className="flex flex-row gap-[19px] items-center ml-auto">
                 <div className="cursor-pointer p-2" onClick={onBack}>
                     <Image src={chevronLeftSvg} alt="" />
                 </div>
