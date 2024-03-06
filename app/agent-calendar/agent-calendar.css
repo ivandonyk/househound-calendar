@@ -1,0 +1,30 @@
+
+.calendar-component td {
+    border-color: #B3B3B3 !important;
+}
+
+.agent-calendar .fc-day-today {
+    background-color: #9FBBD180 !important;
+}
+
+.agent-calendar .fc-timegrid-slot-label {
+    border-left: none !important;
+}
+
+.agent-calendar .fc-timegrid-axis {
+    border-left: none !important;
+}
+
+.agent-calendar table, th {
+    border-style: none !important;
+    border: none !important;
+}
+
+.agent-calendar .fc-col-header-cell-cushion {
+    width: 100%;
+    padding: 0px !important;
+}
+
+.agent-calendar .fc-timegrid-slot-label-frame {
+    text-align: left;
+}

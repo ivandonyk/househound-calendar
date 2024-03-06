@@ -16,12 +16,18 @@ const config: Config = {
         "gray-3": "#555555",
         "gray-4": "#ECECEC",
         "blue-1": "#489FDF",
+        "black-3": "#161616",
+        "gray-5": "#B3B3B3",
+        "gray-6": "#676767",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        "primary-grad": "linear-gradient(169.64deg, #151D29 41.39%, #406A99 77.22%, #2C5D93 100%)"
+        "primary-grad": 
+          "linear-gradient(169.64deg, #151D29 41.39%, #406A99 77.22%, #2C5D93 100%)",
+        "white-grad": 
+          "linear-gradient(144.41deg, #FFFFFF 0%, rgba(187, 194, 212, 0.788) 47.76%, rgba(96, 112, 153, 0.5) 75.08%, rgba(0, 26, 92, 0.2) 98.51%)",
       },
       height: {
         "full-with-nav": "calc(100vh - 60px)"

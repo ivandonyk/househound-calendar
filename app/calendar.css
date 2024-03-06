@@ -1,0 +1,96 @@
+
+
+.calendar-component td {
+    border-color: #FFFFFF50 !important;
+}
+
+.calendar-component td:first-of-type {
+    border-color: transparent !important;
+}
+
+.calendar-component table, th {
+    border-style: none !important;
+    border: none !important;
+}
+
+.calendar-component .fc-scrollgrid td:last-of-type {
+    border-right: none !important;
+}
+
+.calendar-component .fc-scrollgrid td {
+    border-left: none !important;
+}
+
+.calendar-component .fc-scrollgrid td:last-of-type {
+    border-bottom: none !important;
+}
+
+.calendar-component .fc-timegrid-slot:last-of-type {
+    border-bottom: none !important;
+}
+
+.calendar-component .fc-scrollgrid {
+    border-color: transparent !important;
+}
+
+.calendar-component .fc-scrollgrid td:last-of-type {
+    border-right-color: transparent !important;
+}
+
+.calendar-component .fc-scrollgrid-section.fc-scrollgrid-section-body td[role='presentation'] {
+    border-bottom-color: transparent !important;
+}
+
+.calendar-component [role='row']:last-of-type td {
+    border-bottom-color: transparent !important;
+}
+
+.calendar-component .fc-timegrid-body table tbody tr:first-of-type td {
+    border-top: none !important;
+}
+
+.calendar-component th[role='presentation'] {
+    border-right-color: transparent !important;
+}
+
+.calendar-component .fc-col-header-cell-cushion {
+    width: 100%;
+    padding: 0px !important;
+}
+
+.calendar-component .fc-day-sun td {
+    border-left: 0px !important;
+}
+
+.calendar-component .fc-scrollgrid-sync-inner {
+    padding: 0px !important;
+}
+
+.calendar-component .fc-event-main {
+    padding: 0px !important;
+}
+
+.calendar-component .fc-timegrid-slot-label {
+    border: none !important;
+}
+
+.calendar-component .fc-timegrid-axis {
+    border: none !important;
+}
+
+.calendar-component .fc-highlight {
+    background-color: #00C914 !important;
+}
+
+.calendar-component .fc-timegrid-col-events {
+    margin: 0px !important;
+}
+
+.calendar-component .fc-day-today {
+  background-color:inherit !important;
+}
+
+.calendar-component .fc-timegrid-slot-label-frame {
+    text-align: left;
+}
+
