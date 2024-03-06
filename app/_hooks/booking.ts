@@ -73,11 +73,35 @@ export const useCreateBooking = () => {
 
 export const useUpdateBooking = () => {
     const [loading, setLoading] = useState(false)
+    const { user, role } = useUserContext()
 
     const updateBooking = async(payload: IUpdateBookingPayload) => {
         try {
             setLoading(true)
             const { id, ...rest } = payload
+            if(role === Role.Client) {
+                const snapshot = await getDocs(query(
+                    collection(db, "availability"), 
+                    where("uid", "==", payload?.uuids?.find(id => id !== user?.uid) || ""),
+                ))
+                let availabilities: IAvailability[] = [];
+                snapshot.forEach(doc => {
+                    availabilities.push(doc.data() as unknown as IAvailability)
+                })
+                const dates = availabilities.map(availability => ({ 
+                    ...availability,
+                    from: moment(availability.from),
+                    to: moment(availability.to) 
+                }))
+                const availableDate = payload?.startTime ? dates.find(date => 
+                    moment(date.from).isSameOrBefore(moment(payload.startTime))
+                    && moment(date.to).isSameOrAfter(moment(payload.endTime))
+                ) : dates.find(date => moment(date.to).isSameOrAfter(moment(payload.endTime)));
+                if(!availableDate) {
+                    setLoading(false)
+                    return toast.error("Agent not available on selected date")
+                }
+            }
             await updateDoc(doc(db, "bookings", `${id}`), rest)
             setLoading(false)
         } catch (error) {

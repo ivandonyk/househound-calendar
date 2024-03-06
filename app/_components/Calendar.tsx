@@ -55,18 +55,22 @@ const Calendar: React.FC<ICalendarProps> = () => {
     }
 
     const handleResizeEvent = async(eventArg: EventResizeDoneArg) => {
+        const ids = events?.find(event => event.id === eventArg.event.id)?.uuids || []
         await updateBooking({
             id: eventArg.event.id,
-            endTime: moment(eventArg.event.end).toISOString()
+            endTime: moment(eventArg.event.end).toISOString(),
+            uuids: ids
         })
         fetchBookings()
     }
 
     const handleDropEvent = async(eventArg: EventDropArg) => {
+        const ids = events?.find(event => event.id === eventArg.event.id)?.uuids || []
         await updateBooking({
             id: eventArg.event.id,
             startTime: moment(eventArg.event.start).toISOString(),
-            endTime: moment(eventArg.event.end).toISOString()
+            endTime: moment(eventArg.event.end).toISOString(),
+            uuids: ids,
         })
         fetchBookings()
     }
