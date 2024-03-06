@@ -15,8 +15,9 @@ const Navbar = () => {
     
     useEffect(() => {
         const routes = [
-            { label: "Add Availability", to: "/add-availability", role: Role.Agent },
-        ].filter(r => r.role === role)
+            { label: "Add Availability", to: "/add-availability", role: [Role.Agent] },
+            { label: "Calendar", to: "/", role: [Role.Agent, Role.Client] },
+        ].filter(r => r.role.includes(role as Role))
         setRoutes(routes)
     }, [role])
 

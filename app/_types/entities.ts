@@ -15,3 +15,9 @@ export interface IUser {
     lastName: string;
     role: Role;
 }
+
+export interface IAvailability {
+    from: string;
+    to: string;
+    uid: string;
+}

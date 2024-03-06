@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react"
+import { Toaster } from "react-hot-toast"
 
 import "@/app/_lib/firebase/firebase"
 
@@ -15,7 +16,8 @@ export function Providers({
         <UserProvider>
             <CalendarProvider>
                 <ModalsProvider>
-                        {children}
+                    <Toaster />
+                    {children}
                 </ModalsProvider>
             </CalendarProvider>
         </UserProvider>
