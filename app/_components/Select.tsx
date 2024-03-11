@@ -35,7 +35,7 @@ const Select: React.FC<ISelectProps> = ({
                 value={selected}
                 onFocus={() => setActive(true)}
             />
-            {active ? <div className="absolute cursor-pointer flex flex-col gap-[10px] h-[150px] overflow-auto top-[50px] w-[110px] rounded-md bg-white px-[9px] py-[10px]">
+            {active ? <div className="absolute z-20 cursor-pointer flex flex-col gap-[10px] h-[150px] overflow-auto top-[50px] w-[110px] rounded-md bg-white px-[9px] py-[10px]">
                 {options.map(op => <div 
                     className="font-[500] text-[14px] leading-[20px] text-black-3 hover:bg-gray-100" 
                     onClick={() => {

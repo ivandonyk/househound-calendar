@@ -24,8 +24,8 @@ export const useAddAvailability = () => {
             setLoading(true)
             await addDoc(collection(db, "availability"), {
                 uid,
-                to: Timestamp.fromDate(to.utc().toDate()),
-                from: Timestamp.fromDate(from.utc().toDate()),
+                to: Timestamp.fromDate(to.clone().utc().toDate()),
+                from: Timestamp.fromDate(from.clone().utc().toDate()),
             })
             await fetchAvailabilities()
             setLoading(false)
