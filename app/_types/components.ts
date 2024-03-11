@@ -10,8 +10,6 @@ import {
 } from "formik"
 import { Moment } from "moment"
 
-import { IBooking } from "./entities"
-
 import { Modals } from "@/app/_constants/constants"
 
 export interface ICalendarProps {}
@@ -52,4 +50,14 @@ export interface ICalendarHeaderProps {
         start: string;
         end: string;
     };
+}
+
+export interface IWeeklyHourSelectorProps {
+    day: Moment;
+}
+
+export interface ISelectProps {
+    options: string[];
+    onChange?: (value: string) => void;
+    value?: string;
 }
