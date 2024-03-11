@@ -1,24 +1,34 @@
 "use client"
 
 import React, { useLayoutEffect, useState } from "react"
+import moment, { Moment } from "moment"
 import classNames from "classnames"
 import Image from "next/image"
+
+import { useAddAvailability, useDeleteAvailability, useUpdateAvailability } from "@/app/_hooks/availability"
 
 import Select from "@/app/_components/Select"
 
 import { IWeeklyHourSelectorProps } from "@/app/_types/components"
+import { IAvailability } from "@/app/_types/entities"
 
 import blueCheckSvg from "@/public/blueCheck.svg"
 import crossGraySvg from "@/public/crossGray.svg"
 import plusBlueSvg from "@/public/plusBlue.svg"
 import dotSvg from "@/public/dot.svg"
+import { useCalendarContext } from "@/app/_context/CalendarContext"
 
 const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
     day
 }) => {
     const [checked, setIsChecked] = useState(false)
-    const [gapTimes, setGapTimes] = useState<string[]>([])
-    const [slots, setSlots] = useState<string[][]>([[]])
+    const [gapTimes, setGapTimes] = useState<Moment[]>([])
+    const { availabilities } = useCalendarContext()
+    const [to, setTo] = useState<Moment>()
+    const [from, setFrom] = useState<Moment>()
+    const { addAvailability, isLoading } = useAddAvailability()
+    const { isLoading: isUpdating, updateAvailability } = useUpdateAvailability()
+    const { deleteAvailability, isDeleting } = useDeleteAvailability()
 
     useLayoutEffect(() => {
         const intervalsPerHour = 4
@@ -28,28 +38,32 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
         for (let hour = 0; hour < totalHours; hour++) {
             for (let i = 0; i < intervalsPerHour; i++) {
                 const time = day.clone().add(hour, 'hours').add(i * 15, 'minutes');
-                gapTimes.push(time.format('h:mm A').toLowerCase());
+                gapTimes.push(time)
             }
         }
 
         setGapTimes(gapTimes)
     }, [])
 
-    const handleSlotSelect = (type: "from" | "to", slotIndex: number) => (value: string) => {
-        const placeableIndex = type === "from" ? 0 : 1;
-        const temp = [...slots]
-        temp[slotIndex][placeableIndex] = value;
-        setSlots(temp)
+    const handleUpdateSlot = (type: "from" | "to", id: string) => (date: Moment) => {
+        if(type === "to") updateAvailability(id, date)
+        else updateAvailability(id, undefined, date)
     }
+
+    const handleDeleteSlot = (id: string) => deleteAvailability(id)
+
+    const filteredAvailabilities = availabilities.filter(({ to, from }) => moment(to).day() === day.day())
+
+    const expanded = checked || filteredAvailabilities.length;
 
     return (
         <div className="flex flex-row mt-[32px]">
-            {checked ? 
+            {expanded ? 
                 <Image 
                     className={classNames(
                         "cursor-pointer",
-                        { "max-h-[44px]": checked },
-                        { "max-h-[20px]": !checked },
+                        { "max-h-[44px]": expanded },
+                        { "max-h-[20px]": !expanded },
                     )}
                     src={blueCheckSvg} 
                     alt="" 
@@ -59,37 +73,61 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
             />}
             <div className={classNames(
                 "font-[500] w-[40px] text-[18px] leading-[20px] text-black-3 ml-[12px]",
-                { "h-[44px] flex justify-center items-center": checked },
+                { "h-[44px] flex justify-center items-center": expanded },
             )}>
                 {day.format("ddd").toUpperCase()}
             </div>
             <div className="flex flex-col font-[400] text-[18px] leading-[20px] text-gray-7 ml-[35px]">
-                {!checked ? 'Unavailable' : <>
-                    {slots.map((slot, idx) => <div key={idx} className="flex flex-row gap-[7px]">
+                {!filteredAvailabilities?.length && !checked ? 'Unavailable' : <>
+                    {filteredAvailabilities
+                    .map((slot, idx) => <div key={idx} className="flex flex-row gap-[7px]">
                         <Select 
                             options={gapTimes}
-                            onChange={handleSlotSelect("from", idx)}
-                            value={slots[idx][0]}
+                            onChange={handleUpdateSlot("from", slot.id)}
+                            value={moment(slot.from).format("hh:mm a").toLowerCase()}
                         />
                         <Image src={dotSvg} alt="" />
                         <Select 
                             options={gapTimes}
-                            onChange={handleSlotSelect("to", idx)}
-                            value={slots[idx][1]}
+                            onChange={handleUpdateSlot("to", slot.id)}
+                            value={moment(slot.to).format("hh:mm a").toLowerCase()}
                         />
                         <Image
                             className="ml-[29px] cursor-pointer"
-                            onClick={() => setIsChecked(false)}
+                            onClick={() => handleDeleteSlot(slot.id)}
                             src={crossGraySvg}
                             alt=""
                         />
                     </div>)}
                 </>}
+                {checked ? <div className="flex flex-row gap-[7px] mt-[12px]">
+                    <Select 
+                        options={gapTimes}
+                        onChange={date => setFrom(date)}
+                        value={from ? moment(from).format("hh:mm a").toLowerCase() : ""}
+                    />
+                    <Image src={dotSvg} alt="" />
+                    <Select 
+                        options={gapTimes}
+                        onChange={date => setTo(date)}
+                        value={to ? moment(to).format("hh:mm a").toLowerCase() : ""}
+                    />
+                    <Image
+                        className="ml-[29px] cursor-pointer"
+                        onClick={() => {
+                            setIsChecked(false)
+                            setTo(undefined)
+                            setFrom(undefined)
+                        }}
+                        src={crossGraySvg}
+                        alt=""
+                    />
+                </div>: <></>}
             </div>
             <div className={classNames(
                 "flex justify-center items-center relative ml-auto",
-                { "max-h-[20px]": !checked },
-                { "max-h-[44px]": checked }
+                { "max-h-[20px]": !expanded },
+                { "max-h-[44px]": expanded }
             )}>
                 <div className="w-[18px] h-[18px] bg-white absolute" />
                 <Image

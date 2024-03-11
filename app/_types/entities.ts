@@ -17,6 +17,7 @@ export interface IUser {
 }
 
 export interface IAvailability {
+    id: string;
     from: string;
     to: string;
     uid: string;

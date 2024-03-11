@@ -57,7 +57,7 @@ export interface IWeeklyHourSelectorProps {
 }
 
 export interface ISelectProps {
-    options: string[];
-    onChange?: (value: string) => void;
+    options: Moment[];
+    onChange?: (value: Moment) => void;
     value?: string;
 }

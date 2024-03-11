@@ -2,7 +2,6 @@
 
 import React, { 
     createContext, 
-    useCallback, 
     useContext, 
     useEffect, 
     useState
@@ -13,15 +12,18 @@ import {
     query, 
     where 
 } from "firebase/firestore"
+import moment from "moment"
 
 import { 
     ICalendarContext, 
     ICalendarState,
 } from "@/app/_types/context"
 
-import { IBooking } from "@/app/_types/entities"
+import { IAvailability, IBooking } from "@/app/_types/entities"
 
 import { db } from "@/app/_lib/firebase/firebase"
+
+import { Role } from "@/app/_constants/constants"
 
 import { useUserContext } from "./UserContext"
 
@@ -35,6 +37,8 @@ const CalendarContext = createContext<ICalendarContext>({
     setSelectedEvent: () => {},
     events: [],
     fetchBookings: async() => {},
+    availabilities: [],
+    fetchAvailabilities: async() => {},
 })
 export const useCalendarContext = () => useContext(CalendarContext)
 
@@ -42,7 +46,28 @@ const CalendarProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const [selectedSlots, setSelectedSlots] = useState<ICalendarState | null>(null)
     const [selectedEvent, setSelectedEvent] = useState<IBooking | null>(null)
     const [events, setEvents] = useState<IBooking[]>([])
-    const { user } = useUserContext()
+    const [availabilities, setAvailabilities] = useState<IAvailability[]>([])
+    const { user, role } = useUserContext()
+
+    const fetchAvailabilities = async() => {
+        try {
+            if(!user?.uid) return;
+            if(role !== Role.Agent) return;
+            const snapshot = await getDocs(query(collection(db, "availability"), 
+                where("uid", "==", user.uid)
+            ))
+            const list: any[] = []
+            snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IAvailability), id: doc.id }))
+            const parsed = list.map((item: any) => ({ 
+                ...item, 
+                to: item?.to ? moment(item.to.seconds*1000).toISOString() : undefined,
+                from: item?.from ? moment(item.from.seconds*1000).toISOString() : undefined,
+            }))
+            setAvailabilities(parsed)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const fetchBookings = async() => {
         try {
@@ -62,6 +87,10 @@ const CalendarProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         fetchBookings()
     }, [user])
 
+    useEffect(() => {
+        if(user?.uid && role === Role.Agent) fetchAvailabilities()
+    }, [user, role])
+
     return (
         <CalendarContext.Provider value={{ 
             selectedSlots,
@@ -70,6 +99,8 @@ const CalendarProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             setSelectedEvent,
             events,
             fetchBookings,
+            availabilities,
+            fetchAvailabilities,
         }}>
             {children}
         </CalendarContext.Provider>

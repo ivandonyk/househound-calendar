@@ -66,7 +66,7 @@ const AvailabilityCard = () => {
                     {week?.map(day => <WeeklyHourSelector day={day} />)}
                 </div>
             </div>
-            <div className="w-[40%]">
+            <div className="w-[32%] ml-[8%]">
                 <div className="flex flex-row gap-[10px] items-center mb-[7px]">
                     <div className="font-[500] text-[16px] leading-[22px] pt-3">
                         Next appointment

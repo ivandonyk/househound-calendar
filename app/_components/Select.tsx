@@ -39,12 +39,12 @@ const Select: React.FC<ISelectProps> = ({
                 {options.map(op => <div 
                     className="font-[500] text-[14px] leading-[20px] text-black-3 hover:bg-gray-100" 
                     onClick={() => {
-                        setSelected(op)
+                        setSelected(op.format('h:mm A').toLowerCase())
                         setActive(false)
                         onChange?.(op)
                     }}
-                    key={op}
-                >{op}</div>)}
+                    key={op.format('h:mm A').toLowerCase()}
+                >{op.format('h:mm A').toLowerCase()}</div>)}
             </div>: <></>}
         </div>
     )

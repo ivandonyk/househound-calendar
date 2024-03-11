@@ -4,7 +4,7 @@ import React from "react"
 
 import { Modals, Role } from "@/app/_constants/constants"
 
-import { IBooking, IUser } from "./entities"
+import { IAvailability, IBooking, IUser } from "./entities"
 
 export interface IUserContext {
     user: User | null;
@@ -26,6 +26,8 @@ export interface ICalendarContext {
     setSelectedEvent: React.Dispatch<React.SetStateAction<IBooking | null>>;
     events: IBooking[];
     fetchBookings: () => Promise<void>;
+    availabilities: IAvailability[];
+    fetchAvailabilities: () => Promise<void>;
 }
 
 export interface ICalendarState {
