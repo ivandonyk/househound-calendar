@@ -12,6 +12,8 @@ import { Moment } from "moment"
 
 import { Modals } from "@/app/_constants/constants"
 
+import { IBooking } from "./entities";
+
 export interface ICalendarProps {}
 
 export interface ITextInputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
@@ -60,4 +62,13 @@ export interface ISelectProps {
     options: Moment[];
     onChange?: (value: Moment) => void;
     value?: string;
+}
+
+export interface IBookingsProps {
+    week: Moment[];
+}
+
+export interface IDailyParsedEvent {
+    date: Moment;
+    events: IBooking[];
 }

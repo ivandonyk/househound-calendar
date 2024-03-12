@@ -12,6 +12,7 @@ import WeeklyHourSelector from "./WeeklyHourSelector"
 import rightChevronGraySvg from "@/public/rightChevronGray.svg"
 import leftChevronGraySvg from "@/public/leftChevronGray.svg"
 import blueCalendarSvg from "@/public/blueCalendar.svg"
+import Bookings from "./Bookings"
 
 const AvailabilityCard = () => {
     const [week, setWeek] = useState<Moment[] | null>(null)
@@ -66,7 +67,7 @@ const AvailabilityCard = () => {
                     {week?.map(day => <WeeklyHourSelector day={day} />)}
                 </div>
             </div>
-            <div className="w-[32%] ml-[8%]">
+            <div className="w-[32%] ml-[8%] overflow-hidden">
                 <div className="flex flex-row gap-[10px] items-center mb-[7px]">
                     <div className="font-[500] text-[16px] leading-[22px] pt-3">
                         Next appointment
@@ -89,6 +90,7 @@ const AvailabilityCard = () => {
                         />
                     </div>
                 </div>
+                {appointmentWeek ? <Bookings week={appointmentWeek} /> : <></>}
             </div>
         </div>
     )

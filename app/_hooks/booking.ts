@@ -8,11 +8,13 @@ import {
     getDocs,
     query,
     where,
+    deleteDoc,
 } from "firebase/firestore"
 import { useState } from "react"
 import moment from "moment"
 import { toast } from "react-hot-toast"
 
+import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useUserContext } from "@/app/_context/UserContext"
 
 import { db } from "@/app/_lib/firebase/firebase"
@@ -112,4 +114,25 @@ export const useUpdateBooking = () => {
     }
 
     return { updateBooking, isUpdatingBooking: loading }
+}
+
+export const useDeleteBooking = () => {
+    const [loading, setLoading] = useState(false)
+    const { fetchBookings } = useCalendarContext()
+
+    const deleteBooking = async(id: string) => {
+        try {
+            setLoading(true)
+            const docRef = doc(db, "bookings", id)
+            await deleteDoc(docRef)
+            await fetchBookings()
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+            alert("Failed to delete booking")
+        }
+    }
+
+    return { deleteBooking, isDeletingBooking: loading }
 }
