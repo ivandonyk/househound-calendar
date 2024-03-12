@@ -28,9 +28,9 @@ const Select: React.FC<ISelectProps> = ({
         <div className="relative">
             <input
                 className={classNames(
-                    "w-[100px] h-[44px] rounded-[5px] border-[0.7px] border-gray-8 text-black-3 bg-transparent",
-                    "font-[400] text-[16px] leading-[20px]",
-                    "p-[12px]" 
+                    "w-[75px] h-[30px] md:w-[100px] md:h-[44px] rounded-[5px] border-[0.7px] border-gray-8 text-black-3 bg-transparent",
+                    "font-[400] text-[14px] md:text-[16px] leading-[20px]",
+                    "px-[5px] py-[8px] md:px-[12px] md:py-[12px]" 
                 )}
                 value={selected}
                 onFocus={() => setActive(true)}

@@ -11,7 +11,9 @@ import WeeklyHourSelector from "./WeeklyHourSelector"
 
 import rightChevronGraySvg from "@/public/rightChevronGray.svg"
 import leftChevronGraySvg from "@/public/leftChevronGray.svg"
+import greenCalendarSvg from "@/public/greenCalendar.svg"
 import blueCalendarSvg from "@/public/blueCalendar.svg"
+
 import Bookings from "./Bookings"
 
 const AvailabilityCard = () => {
@@ -51,12 +53,17 @@ const AvailabilityCard = () => {
     }
 
     return (
-        <div className="w-full h-[372px] bg-white-grad-2 rounded-[10px] flex flex-row px-[18px] py-[24px]">
-            <div className="w-[60%] flex flex-col">
+        <div className="w-full h-[372px] bg-white-grad-2 rounded-[10px] flex flex-row px-[12px] md:px-[18px] py-[24px]">
+            <div className="w-[100%] md:w-[60%] flex flex-col">
                 <div className="flex flex-row gap-[10px] items-center mb-[7px]">
                     <Image
-                        className="w-[35px] h-[35px]"
+                        className="hidden md:block w-[35px] h-[35px]"
                         src={blueCalendarSvg} 
+                        alt="" 
+                    />
+                    <Image
+                        className="block md:hidden w-[35px] h-[35px]"
+                        src={greenCalendarSvg} 
                         alt="" 
                     />
                     <div className="font-[500] text-[20px] leading-[20px]">
@@ -67,7 +74,7 @@ const AvailabilityCard = () => {
                     {week?.map(day => <WeeklyHourSelector day={day} />)}
                 </div>
             </div>
-            <div className="w-[32%] ml-[8%] overflow-hidden">
+            <div className="w-[32%] md:block hidden ml-[8%] overflow-hidden">
                 <div className="flex flex-row gap-[10px] items-center mb-[7px]">
                     <div className="font-[500] text-[16px] leading-[22px] pt-3">
                         Next appointment

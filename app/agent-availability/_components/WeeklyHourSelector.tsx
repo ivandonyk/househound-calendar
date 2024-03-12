@@ -32,9 +32,9 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
     const { user } = useUserContext()
     const [to, setTo] = useState<Moment>()
     const [from, setFrom] = useState<Moment>()
-    const { addAvailability, isLoading } = useAddAvailability()
-    const { isLoading: isUpdating, updateAvailability } = useUpdateAvailability()
-    const { deleteAvailability, isDeleting } = useDeleteAvailability()
+    const { addAvailability } = useAddAvailability()
+    const { updateAvailability } = useUpdateAvailability()
+    const { deleteAvailability } = useDeleteAvailability()
 
     useLayoutEffect(() => {
         const intervalsPerHour = 4
@@ -76,22 +76,22 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                 <Image 
                     className={classNames(
                         "cursor-pointer",
-                        { "max-h-[44px]": expanded },
-                        { "max-h-[20px]": !expanded },
+                        { "max-h-[30px] md:max-h-[44px]": expanded },
+                        { "max-h-[18px] md:max-h-[20px]": !expanded },
                     )}
                     src={blueCheckSvg} 
                     alt="" 
                 />
             : <div 
-                className="w-[20px] h-[20px] cursor-pointer rounded-[2px] border-black border-[0.5px]" 
+                className="md:w-[20px] w-[18px] md:h-[20px] h-[18px] cursor-pointer rounded-[2px] border-black border-[0.5px]" 
             />}
             <div className={classNames(
-                "font-[500] w-[40px] text-[18px] leading-[20px] text-black-3 ml-[12px]",
-                { "h-[44px] flex justify-center items-center": expanded },
+                "font-[500] w-[25px] md:w-[40px] text-[14px] md:text-[18px] leading-[20px] text-black-3 ml-[12px]",
+                { "h-[30px] md:h-[44px] flex justify-center items-center": expanded },
             )}>
                 {day.format("ddd").toUpperCase()}
             </div>
-            <div className="flex flex-col gap-[12px] font-[400] text-[18px] leading-[20px] text-gray-7 ml-[35px]">
+            <div className="flex flex-col gap-[12px] font-[400] text-[14px] md:text-[18px] leading-[20px] text-gray-7 ml-[20px] md:ml-[35px]">
                 {!filteredAvailabilities?.length && !checked ? 'Unavailable' : <>
                     {filteredAvailabilities
                         .map((slot, idx) => <div key={idx} className="flex flex-row gap-[7px]">
@@ -107,7 +107,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                             value={moment(slot.to).format("hh:mm a").toLowerCase()}
                         />
                         <Image
-                            className="ml-[29px] cursor-pointer"
+                            className="md:ml-[29px] cursor-pointer"
                             onClick={() => handleDeleteSlot(slot.id)}
                             src={crossGraySvg}
                             alt=""
@@ -127,7 +127,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                         value={to ? moment(to).format("hh:mm a").toLowerCase() : ""}
                     />
                     <Image
-                        className="ml-[29px] cursor-pointer"
+                        className="md:ml-[29px] cursor-pointer"
                         onClick={() => {
                             setIsChecked(false)
                             setTo(undefined)
@@ -136,13 +136,13 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                         src={crossGraySvg}
                         alt=""
                     />
-                    <button onClick={handleAddSlot} className="p-2 rounded-md bg-primary-blue text-white ml-4">Save</button>
+                    <button onClick={handleAddSlot} className="px-2 md:p-2 rounded-md bg-primary-blue text-white md:ml-4">Save</button>
                 </div>: <></>}
             </div>
             <div className={classNames(
                 "flex justify-center items-center relative ml-auto",
-                { "max-h-[20px]": !expanded },
-                { "max-h-[44px]": expanded }
+                { "max-h-[30px] md:max-h-[44px]": expanded },
+                { "max-h-[18px] md:max-h-[20px]": !expanded },
             )}>
                 <div className="w-[18px] h-[18px] bg-white absolute" />
                 <Image
