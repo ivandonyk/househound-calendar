@@ -47,8 +47,8 @@ export const useCreateBooking = () => {
                 })
                 const dates = availabilities.map(availability => ({ 
                     ...availability,
-                    from: moment(availability.from),
-                    to: moment(availability.to) 
+                    from: moment(availability.from.seconds*1000),
+                    to: moment(availability.to.seconds*1000) 
                 }))
                 const availableDate = dates.find(date => 
                     moment(date.from).isSameOrBefore(moment(payload.startTime))

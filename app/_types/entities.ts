@@ -1,4 +1,7 @@
+import { Timestamp } from "firebase/firestore"
+
 import { Role } from "@/app/_constants/constants"
+
 export interface IBooking {
     id: string;
     title: string;
@@ -18,7 +21,7 @@ export interface IUser {
 
 export interface IAvailability {
     id: string;
-    from: string;
-    to: string;
+    from: Timestamp;
+    to: Timestamp;
     uid: string;
 }
