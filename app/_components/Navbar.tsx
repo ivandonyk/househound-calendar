@@ -18,7 +18,9 @@ const Navbar = () => {
             { label: "Add Availability", to: "/add-availability", role: [Role.Agent] },
             { label: "Calendar", to: "/", role: [Role.Agent, Role.Client] },
             { label: "Agent Availability", to: "/agent-availability", role: [Role.Agent] },
-        ].filter(r => r.role.includes(role as Role))
+            { label: "Client Calendar", to: "/client-calendar" }
+
+        ].filter(r => !r.role || r.role.includes(role as Role))
         setRoutes(routes)
     }, [role])
 

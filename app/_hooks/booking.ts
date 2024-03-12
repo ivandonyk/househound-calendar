@@ -43,7 +43,7 @@ export const useCreateBooking = () => {
                     collection(db, "availability"), 
                     where("uid", "==", payload.uuids.find(id => id !== user?.uid)),
                 ))
-                let availabilities: IAvailability[] = [];
+                let availabilities: any[] = [];
                 snapshot.forEach(doc => {
                     availabilities.push(doc.data() as unknown as IAvailability)
                 })

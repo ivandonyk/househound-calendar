@@ -2,6 +2,8 @@
 
 import React from "react"
 import { Toaster } from "react-hot-toast"
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 import "@/app/_lib/firebase/firebase"
 
@@ -13,13 +15,15 @@ export function Providers({
     children,
 }: { children: React.ReactNode | React.ReactNode[] }) {
     return (
-        <UserProvider>
-            <CalendarProvider>
-                <ModalsProvider>
-                    <Toaster />
-                    {children}
-                </ModalsProvider>
-            </CalendarProvider>
-        </UserProvider>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+            <UserProvider>
+                <CalendarProvider>
+                    <ModalsProvider>
+                        <Toaster />
+                        {children}
+                    </ModalsProvider>
+                </CalendarProvider>
+            </UserProvider>
+        </LocalizationProvider>
     )
 }

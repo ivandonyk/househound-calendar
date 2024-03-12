@@ -23,6 +23,9 @@ const config: Config = {
         "gray-8": "#4F4F4F",
         "blue-2": "#448BC5",
         "gray-9": "#606060",
+        "blue-3": "#151d29",
+        "blue-4": "#006CBC",
+        "gray-10": "#858585",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -33,6 +36,8 @@ const config: Config = {
         "white-grad": 
           "linear-gradient(144.41deg, #FFFFFF 0%, rgba(187, 194, 212, 0.788) 77.76%, rgba(96, 112, 153, 0.5) 100.08%, rgba(0, 26, 92, 0.2) 98.51%)",
         "white-grad-2":
+          "linear-gradient(143.41deg, #FFFFFF 2.06%, rgba(255, 255, 255, 0.7) 52.2%, rgba(255, 255, 255, 0.3) 98.48%)",
+        "white-grad-3":
           "linear-gradient(143.41deg, #FFFFFF 2.06%, rgba(255, 255, 255, 0.7) 52.2%, rgba(255, 255, 255, 0.3) 98.48%)"
       },
       height: {

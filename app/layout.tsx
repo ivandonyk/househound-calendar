@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Providers } from "./_providers/Providers";
 import Navbar from "./_components/Navbar";
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 
 import "./globals.css";
 
@@ -25,10 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <Providers>
-          <Navbar />
-          {children}
-        </Providers>
+        <AppRouterCacheProvider>
+          <Providers>
+            <Navbar />
+            {children}
+          </Providers>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
