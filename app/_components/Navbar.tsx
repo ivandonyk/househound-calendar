@@ -37,7 +37,7 @@ const Navbar = () => {
 
     if(!role) return <></>
     return (
-        <div className="w-full flex justify-center items-center gap-4 p-2">
+        <div className="w-full flex justify-center flex-wrap items-center gap-4 p-2">
             {routes.map(({ to, label }) => <div 
                 key={to}
                 className="cursor-pointer text-black p-2 border-2 border-black rounded-sm"

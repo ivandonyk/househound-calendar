@@ -2,19 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-.MuiDayCalendar-header {
-    display: flex;
-    flex-direction: row;
-    gap: 30px;
-}
-
-.MuiDayCalendar-weekDayLabel {
-    width: 96px !important;
-    font-weight: 400 !important;
-    font-size: 14px !important;
-    color: #161616 !important;
-}
-
 .MuiPickersSlideTransition-root {
     min-height: 255px !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .MuiDayCalendar-header {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .MuiDayCalendar-weekDayLabel {
+        font-weight: 400 !important;
+        font-size: 14px !important;
+        color: #3E3E3E !important;
+    } 
+}
+
+@media only screen and (min-width: 768px) {
+    .MuiDayCalendar-header {
+        display: flex;
+        flex-direction: row;
+        gap: 30px;
+    }
+
+    .MuiDayCalendar-weekDayLabel {
+        width: 96px !important;
+        font-weight: 400 !important;
+        font-size: 14px !important;
+        color: #161616 !important;
+    }    
 }

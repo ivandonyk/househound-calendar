@@ -33,8 +33,8 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
             <PickersDay 
                 {...props}
                 className={classNames(
-                    "!font-[400] !text-[17px] !leading-[20px] !mx-[30px] !mb-[4px]",
-                    { "!bg-white !text-blue-4": available },
+                    "!font-[400] !text-[17px] !leading-[20px] !my-[2px] md:!my-0 md:!mx-[30px] !mb-[4px]",
+                    { "!bg-white !text-blue-4": available && !(selectedDate?.format("dddd DD yyyy") === props.day.format("dddd DD yyyy")) },
                     { "!text-gray-10 pointer-events-none": !available },
                     { "!font-[600]": moment().format("dddd DD yyyy") === props.day.format("dddd DD yyyy") },
                     { "!bg-blue-4 !text-white": selectedDate?.format("dddd DD yyyy") === props.day.format("dddd DD yyyy") }

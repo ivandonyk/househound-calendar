@@ -30,33 +30,59 @@ const CalendarCard = () => {
 
     return (
         <div className="w-full bg-white-grad-3 px-[18px] gap-[12px] py-[23px] rounded-md flex flex-col">
-            <div className="font-[500] text-[18px] leading-[20px] text-black-3">
+            <div className="hidden md:block font-[500] text-[18px] leading-[20px] text-black-3">
                 Schedule a tour window with Danny M.
             </div>
-            <div className="font-[400] text-[16px] leading-[20px] text-black-3">
+            <div className="font-[400] hidden md:block text-[16px] leading-[20px] text-black-3">
                 Select Date and Time
             </div>
-            <div className="w-full flex flex-row">
-                <DateCalendar
-                    classes={{
-                        root: "!m-0 !w-[60%]",
-                    }}
-                    slots={{
-                        day: props => <CalendarDay 
-                            {...props} 
-                            selectedDate={selectedDate} 
-                            setSelectedDate={setSelectedDate} 
-                            availabilities={availabilities}
-                        />,
-                        calendarHeader: CalendarHeader,
-                    }}
-                    dayOfWeekFormatter={(_, date) => `${date.format("ddd").toUpperCase()}`}
-                />
-                <div className='flex flex-col w-[40%] h-full overflow-hidden'>
-                    <div className='w-full font-[400] text-[16px] pl-[39px] leading-[20px] text-black-3 mb-[22px]'>
+            <div className='md:hidden font-[500] text-[16px] leading-[22px] text-black-3'>
+                Select a day
+            </div>
+            <div className="w-full flex flex-col md:flex-row">
+                <div className='w-[60%] md:block hidden'>
+                    <DateCalendar
+                        classes={{
+                            root: "!m-0 !w-[100%]",
+                        }}
+                        slots={{
+                            day: props => <CalendarDay 
+                                {...props} 
+                                selectedDate={selectedDate} 
+                                setSelectedDate={setSelectedDate} 
+                                availabilities={availabilities}
+                            />,
+                            calendarHeader: CalendarHeader,
+                        }}
+                        dayOfWeekFormatter={(_, date) => `${date.format("ddd").toUpperCase()}`}
+                    />
+                </div>
+                <div className='w-[100%] md:hidden mb-[45px]'>
+                    <DateCalendar
+                        classes={{
+                            root: "!m-0 !w-[100%]",
+                            viewTransitionContainer: "!bg-gray-12 !rounded-lg"
+                        }}
+                        slots={{
+                            day: props => <CalendarDay 
+                                {...props} 
+                                selectedDate={selectedDate} 
+                                setSelectedDate={setSelectedDate} 
+                                availabilities={availabilities}
+                            />,
+                            calendarHeader: CalendarHeader,
+                        }}
+                        dayOfWeekFormatter={(_, date) => `${date.format("ddd")[0].toUpperCase()}`}
+                    />
+                </div>
+                <div className='md:hidden font-[500] text-[14px] leading-[22px] text-black-3'>
+                    Select a time
+                </div>
+                <div className='flex flex-col w-[100%] md:w-[40%] h-full overflow-hidden'>
+                    <div className='w-full font-[400] text-[13px] md:text-[16px] md:pl-[39px] leading-[20px] text-black-3 mb-[22px]'>
                         {selectedDate?.format("dddd, MMMM DD")}
                     </div>
-                    <div className='w-full flex flex-col gap-[11px] pl-[39px] h-[250px] overflow-auto'>
+                    <div className='w-full flex flex-col gap-[11px] md:pl-[39px] h-[250px] overflow-auto'>
                         {gapTimes.map(time => <div 
                             key={time.toISOString()} 
                             className='px-[50px] cursor-pointer py-[12px] border-[1px] border-gray-11 rounded-md flex justify-center items-center'
