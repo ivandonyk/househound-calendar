@@ -18,6 +18,7 @@ export enum Role {
  * This enum contains information about modals
  */
 export enum Modals {
+    AppointmentCreated,
     AddAvailability,
     OptionsModal,
     Booking,
