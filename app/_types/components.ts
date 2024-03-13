@@ -12,7 +12,7 @@ import { Moment } from "moment"
 
 import { Modals } from "@/app/_constants/constants"
 
-import { IBooking } from "./entities";
+import { IAvailability, IBooking } from "./entities";
 import { PickersDayProps } from "@mui/x-date-pickers";
 
 export interface ICalendarProps {}
@@ -77,4 +77,5 @@ export interface IDailyParsedEvent {
 export interface ICalendarDayProps extends PickersDayProps<Moment> {
     selectedDate?: Moment;
     setSelectedDate: React.Dispatch<React.SetStateAction<Moment | undefined>>;
+    availabilities: IAvailability[];
 }

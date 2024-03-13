@@ -4,12 +4,15 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import React, { useState, useLayoutEffect } from "react"
 import { Moment } from "moment"
 
+
 import CalendarHeader from './CalendarHeader'
 import CalendarDay from "./CalendarDay"
+import { useAvailabillities } from '@/app/_hooks/availability'
 
 const CalendarCard = () => {
     const [selectedDate, setSelectedDate] = useState<Moment>()
     const [gapTimes, setGapTimes] = useState<Moment[]>([])
+    const { availabilities } = useAvailabillities("KNuJBnSn2gfAV6mYqGKWtNG0WFi1")
 
     useLayoutEffect(() => {
         if(!selectedDate) return;
@@ -39,7 +42,12 @@ const CalendarCard = () => {
                         root: "!m-0 !w-[60%]",
                     }}
                     slots={{
-                        day: props => <CalendarDay {...props} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />,
+                        day: props => <CalendarDay 
+                            {...props} 
+                            selectedDate={selectedDate} 
+                            setSelectedDate={setSelectedDate} 
+                            availabilities={availabilities}
+                        />,
                         calendarHeader: CalendarHeader,
                     }}
                     dayOfWeekFormatter={(_, date) => `${date.format("ddd").toUpperCase()}`}

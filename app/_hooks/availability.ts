@@ -7,13 +7,46 @@ import {
     Timestamp,
     updateDoc,
     deleteDoc,
+    getDocs,
+    query,
+    where,
 } from "firebase/firestore"
-import { Moment } from "moment"
-import { useState } from "react"
+import moment, { Moment } from "moment"
+import { useEffect, useState } from "react"
+
+import { db } from "@/app/_lib/firebase/firebase"
 
 import { useCalendarContext } from "@/app/_context/CalendarContext"
 
-import { db } from "@/app/_lib/firebase/firebase"
+import { IAvailability } from "@/app/_types/entities"
+
+export const useAvailabillities = (agentId: string) => {
+    const [availabilities, setAvailabilities] = useState<IAvailability[]>([])
+
+    const fetchAvailabilities = async() => {
+        try {
+            const snapshot = await getDocs(query(collection(db, "availability"), 
+                where("uid", "==", agentId)
+            ))
+            const list: any[] = []
+            snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IAvailability), id: doc.id }))
+            const parsed = list.map((item: any) => ({ 
+                ...item, 
+                to: item?.to ? moment(item.to.seconds*1000).toISOString() : undefined,
+                from: item?.from ? moment(item.from.seconds*1000).toISOString() : undefined,
+            }))
+            setAvailabilities(parsed)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchAvailabilities()
+    }, [])
+
+    return { availabilities, setAvailabilities, fetchAvailabilities }
+}
 
 export const useAddAvailability = () => {
     const [loading, setLoading] = useState(false)

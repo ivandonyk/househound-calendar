@@ -5,12 +5,14 @@ import { PickersDay } from "@mui/x-date-pickers"
 import classNames from "classnames"
 import moment from "moment"
 
-import { useCalendarContext } from "@/app/_context/CalendarContext"
-
 import { ICalendarDayProps } from "@/app/_types/components"
 
-const CalendarDay: React.FC<ICalendarDayProps> = ({ selectedDate, setSelectedDate, ...props }) => {
-    const { availabilities } = useCalendarContext()
+const CalendarDay: React.FC<ICalendarDayProps> = ({ 
+    selectedDate, 
+    setSelectedDate,
+    availabilities,
+    ...props 
+}) => {
     const [available, setAvailable] = useState(false)
 
     useEffect(() => {
