@@ -10,7 +10,7 @@ import leftChevronGraySvg from "@/public/leftChevronGray.svg"
 
 const CalendarHeader: React.FC<PickersCalendarHeaderProps<Moment>> = ({ currentMonth, onMonthChange }) => {
     return (
-        <div className="flex flex-row gap-2 pt-3 mr-auto md:ml-auto md:mr-0 mb-[20px]">
+        <div className="flex flex-row gap-2 pt-3 mr-auto md:ml-auto mb-[20px] md:mr-[3vw]">
             <Image 
                 className="hidden md:block cursor-pointer"
                 src={leftChevronGraySvg}
