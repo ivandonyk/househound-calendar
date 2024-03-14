@@ -14,7 +14,7 @@ const AppointmentCreated = () => {
             
             modal={Modals.AppointmentCreated}
         >
-            <div className="bg-white w-[213px] h-[88px] mt-auto mb-4 flex justify-center items-center flex-col gap-2 rounded-lg">
+            <div className="bg-white w-full md:w-[213px] h-[88px] mt-auto md:mb-4 rounded-b-none md:rounded-b-lg flex justify-center items-center flex-col gap-2 rounded-xl md:rounded-lg">
                 <Image
                     src={blueRoundCheckSvg}
                     alt=""
