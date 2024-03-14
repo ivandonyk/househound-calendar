@@ -53,7 +53,7 @@ const CalendarCard = () => {
     }
 
     return (
-        <div className="w-full bg-white-grad-3 px-[18px] gap-[12px] py-[23px] rounded-md flex flex-col">
+        <div className="w-full bg-white-grad-3 px-[18px] gap-0 md:gap-[12px] py-[23px] rounded-md flex flex-col">
             <div className="hidden md:block font-[500] text-[18px] leading-[20px] text-black-3">
                 Schedule a tour window with Danny M.
             </div>
@@ -81,7 +81,7 @@ const CalendarCard = () => {
                         dayOfWeekFormatter={(_, date) => `${date.format("ddd").toUpperCase()}`}
                     />
                 </div>
-                <div className='w-[100%] md:hidden mb-[45px]'>
+                <div className='w-[100%] md:hidden mb-[20px]'>
                     <DateCalendar
                         classes={{
                             root: "!m-0 !w-[100%]",
@@ -106,16 +106,16 @@ const CalendarCard = () => {
                     <div className={classNames(
                         'w-full font-[400] text-[13px] md:text-[16px] md:pl-[39px] leading-[20px] text-black-3',
                         { 'mb-[22px]': !selectedSlot },
-                        { 'mb-[10px]': selectedSlot },
+                        { 'mb-[20px]': selectedSlot },
                     )}>
                         {selectedDate?.format("dddd, MMMM DD")}
                     </div>
-                    {selectedSlot ? <div className='flex md:pl-[39px] flex-row gap-2 w-full mb-[10px]'>
-                        <div className='w-full text-white text-center rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-gray-13'>
+                    {selectedSlot ? <div className='flex md:pl-[39px] flex-row gap-2 w-full mb-[9px]'>
+                        <div className='w-full h-[55px] text-white grid place-items-center rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-gray-13'>
                             {selectedSlot.format("hh:mm a")}
                         </div>
                         <div 
-                            className='w-full text-center text-white rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-blue-4'
+                            className='w-full h-[55px] grid place-items-center text-white rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-blue-4'
                             onClick={handleCreate}
                         >
                             Create
