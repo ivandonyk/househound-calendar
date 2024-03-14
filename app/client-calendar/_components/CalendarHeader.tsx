@@ -12,12 +12,12 @@ const CalendarHeader: React.FC<PickersCalendarHeaderProps<Moment>> = ({ currentM
     return (
         <div className="flex flex-row gap-2 pt-3 mr-auto md:ml-auto md:mr-0 mb-[20px]">
             <Image 
-                className="cursor-pointer"
+                className="hidden md:block cursor-pointer"
                 src={leftChevronGraySvg}
                 alt=""
                 onClick={() => onMonthChange(currentMonth.clone().add(-1, "month"), "right")}
             />
-            <div className="font-[600] text-[14px] leading-[22px] text-black-3">
+            <div className="font-[400] md:font-[600] text-[14px] leading-[22px] text-black-3">
                 {currentMonth.format("MMMM, yyyy")}
             </div>
             <Image
