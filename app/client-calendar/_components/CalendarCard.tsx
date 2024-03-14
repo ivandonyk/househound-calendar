@@ -2,9 +2,15 @@
 
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import React, { useState, useLayoutEffect } from "react"
+import classNames from 'classnames'
 import { Moment } from "moment"
 
+import { useModalContext } from '@/app/_context/ModalContext'
+
 import { useAvailabillities } from '@/app/_hooks/availability'
+import { useCreateBooking } from '@/app/_hooks/booking'
+
+import { Modals } from '@/app/_constants/constants'
 
 import CalendarHeader from './CalendarHeader'
 import CalendarDay from "./CalendarDay"
@@ -14,7 +20,11 @@ import "../client-calendar.css"
 const CalendarCard = () => {
     const [selectedDate, setSelectedDate] = useState<Moment>()
     const [gapTimes, setGapTimes] = useState<Moment[]>([])
-    const { availabilities } = useAvailabillities("KNuJBnSn2gfAV6mYqGKWtNG0WFi1")
+    const agentId = "KNuJBnSn2gfAV6mYqGKWtNG0WFi1"
+    const { availabilities } = useAvailabillities(agentId)
+    const [selectedSlot, setSelectedSlot] = useState<Moment>()
+    const { addBooking, isCreatingBooking } = useCreateBooking()
+    const { setActiveModal } = useModalContext()
 
     useLayoutEffect(() => {
         if(!selectedDate) return;
@@ -29,6 +39,18 @@ const CalendarCard = () => {
         }
         setGapTimes(gapTimes)
     }, [selectedDate])
+
+    const handleCreate = async() => {
+        if(isCreatingBooking || !selectedSlot) return
+        await addBooking({
+            endTime: "",
+            notes: "",
+            startTime: selectedSlot.toISOString(),
+            title: "",
+            uuids: [agentId]
+        })
+        setActiveModal(Modals.AppointmentCreated)
+    }
 
     return (
         <div className="w-full bg-white-grad-3 px-[18px] gap-[12px] py-[23px] rounded-md flex flex-col">
@@ -81,12 +103,28 @@ const CalendarCard = () => {
                     Select a time
                 </div>
                 <div className='flex flex-col w-[100%] md:w-[40%] h-full overflow-hidden'>
-                    <div className='w-full font-[400] text-[13px] md:text-[16px] md:pl-[39px] leading-[20px] text-black-3 mb-[22px]'>
+                    <div className={classNames(
+                        'w-full font-[400] text-[13px] md:text-[16px] md:pl-[39px] leading-[20px] text-black-3',
+                        { 'mb-[22px]': !selectedSlot },
+                        { 'mb-[10px]': selectedSlot },
+                    )}>
                         {selectedDate?.format("dddd, MMMM DD")}
                     </div>
+                    {selectedSlot ? <div className='flex flex-row gap-2 w-full mb-[10px]'>
+                        <div className='w-full text-white text-center rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-gray-13'>
+                            {selectedSlot.format("hh:mm a")}
+                        </div>
+                        <div 
+                            className='w-full text-center text-white rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-blue-4'
+                            onClick={handleCreate}
+                        >
+                            Create
+                        </div>
+                    </div> : <></>}
                     <div className='w-full flex flex-col gap-[11px] md:pl-[39px] h-[250px] overflow-auto'>
                         {gapTimes.map(time => <div 
-                            key={time.toISOString()} 
+                            key={time.toISOString()}
+                            onClick={() => setSelectedSlot(time)}
                             className='px-[50px] cursor-pointer py-[12px] border-[1px] border-gray-11 rounded-md flex justify-center items-center'
                         >
                             {time.format("hh:mm a")}
