@@ -115,7 +115,7 @@ const CalendarCard = () => {
                             {selectedSlot.format("hh:mm a")}
                         </div>
                         <div 
-                            className='w-full h-[55px] grid place-items-center text-white rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-blue-4'
+                            className='w-full cursor-pointer h-[55px] grid place-items-center text-white rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-blue-4'
                             onClick={handleCreate}
                         >
                             Create
