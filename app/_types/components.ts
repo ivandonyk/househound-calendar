@@ -76,6 +76,6 @@ export interface IDailyParsedEvent {
 
 export interface ICalendarDayProps extends PickersDayProps<Moment> {
     selectedDate?: Moment;
-    setSelectedDate: React.Dispatch<React.SetStateAction<Moment | undefined>>;
+    setSelectedDate?: React.Dispatch<React.SetStateAction<Moment | undefined>>;
     availabilities: IAvailability[];
 }

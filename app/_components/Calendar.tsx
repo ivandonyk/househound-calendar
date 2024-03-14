@@ -3,6 +3,7 @@
 import interactionPlugin, { 
     EventResizeDoneArg
 } from "@fullcalendar/interaction"
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { EventDropArg } from "@fullcalendar/core/index.js"
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/react'
@@ -11,7 +12,7 @@ import React, {
     useRef, 
     useState 
 } from "react"
-import moment from "moment"
+import moment, { Moment } from "moment"
 
 import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useModalContext } from "@/app/_context/ModalContext"
@@ -24,9 +25,11 @@ import { Modals } from "@/app/_constants/constants"
 import { ICalendarProps } from '@/app/_types/components'
 
 import CalendarDayHeader from './CalendarDayHeader'
+import CalendarHeaderMui from "./CalendarHeaderMui"
 import CalendarSlotLabel from './CalendarSlotLabel'
 import CalendarHeader from "./CalendarHeader"
 import CalendarEvent from './CalendarEvent'
+import CalendarDay from "./CalendarDay"
 
 const Calendar: React.FC<ICalendarProps> = () => {
     const calendarRef = useRef<FullCalendar | null>(null)
@@ -35,6 +38,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
     const { user } = useUserContext()
     const [calendarDate, setCalendarDate] = useState({ start: "",  end: "" })
     const { updateBooking } = useUpdateBooking()
+    const [selectedDate, setSelectedDate] = useState<Moment>()
 
     const handleSelect = (startDate: string, endDate: string) => {
         setSelectedSlots({
@@ -83,34 +87,59 @@ const Calendar: React.FC<ICalendarProps> = () => {
     }, [events, user])
 
     return (
-        <div className='w-full h-full overflow-auto p-4'>
-            <CalendarHeader onBack={onBack} onNext={onNext} calendarDate={calendarDate} />
-            <FullCalendar
-                ref={calendarRef}
-                datesSet={date => setCalendarDate({ start: date.startStr, end: date.endStr })}
-                plugins={[timeGridPlugin, interactionPlugin]}
-                initialView='timeGridWeek'
-                editable
-                firstDay={1}
-                eventOverlap={false}
-                eventResize={handleResizeEvent}
-                eventDrop={handleDropEvent}
-                headerToolbar={false}
-                selectOverlap={false}
-                allDaySlot={false}
-                selectLongPressDelay={1}
-                selectable={true}
-                select={(info) => handleSelect(info.startStr, info.endStr)}
-                slotDuration={{ hours: 1 }}
-                dayHeaderClassNames={["!p-0 !m-0"]}
-                slotLabelClassNames={['text-[18px] font-[400] p-2 !border-none text-[#FFFFFF50]']}
-                eventClassNames={["bg-transparent border-none !shadow-none"]}
-                slotLabelContent={props => <CalendarSlotLabel key={props.date.toLocaleString()} {...props} />}
-                eventContent={(props) => <CalendarEvent key={props.event.start?.toLocaleString()} {...props} />}
-                dayHeaderContent={props => <CalendarDayHeader key={props.date.toISOString()} {...props} />}
-                height="100%"
-            />
-        </div>
+        <>
+            <div className='hidden md:block w-full h-full overflow-auto p-4'>
+                <CalendarHeader onBack={onBack} onNext={onNext} calendarDate={calendarDate} />
+                <FullCalendar
+                    ref={calendarRef}
+                    datesSet={date => setCalendarDate({ start: date.startStr, end: date.endStr })}
+                    plugins={[timeGridPlugin, interactionPlugin]}
+                    initialView='timeGridWeek'
+                    editable
+                    firstDay={1}
+                    eventOverlap={false}
+                    eventResize={handleResizeEvent}
+                    eventDrop={handleDropEvent}
+                    headerToolbar={false}
+                    selectOverlap={false}
+                    allDaySlot={false}
+                    selectLongPressDelay={1}
+                    selectable={true}
+                    select={(info) => handleSelect(info.startStr, info.endStr)}
+                    slotDuration={{ hours: 1 }}
+                    dayHeaderClassNames={["!p-0 !m-0"]}
+                    slotLabelClassNames={['text-[18px] font-[400] p-2 !border-none text-[#FFFFFF50]']}
+                    eventClassNames={["bg-transparent border-none !shadow-none"]}
+                    slotLabelContent={props => <CalendarSlotLabel key={props.date.toLocaleString()} {...props} />}
+                    eventContent={(props) => <CalendarEvent key={props.event.start?.toLocaleString()} {...props} />}
+                    dayHeaderContent={props => <CalendarDayHeader key={props.date.toISOString()} {...props} />}
+                    height="100%"
+                />
+            </div>
+            <div className='md:hidden w-full h-full overflow-auto p-4'>
+                <div className=" w-full">
+                    <div className='w-[100%] md:hidden mb-[45px]'>
+                        <DateCalendar
+                            classes={{
+                                root: "!m-0 !w-[100%]",
+                                viewTransitionContainer: " !rounded-xl !px-[10px] !bg-blue-5"
+                            }}
+                            disableHighlightToday
+                            slots={{
+                                day: props => <CalendarDay 
+                                    {...props}
+                                    selectedDate={selectedDate}
+                                    setSelectedDate={setSelectedDate}
+                                    availabilities={[]}
+                                />,
+                                calendarHeader: CalendarHeaderMui,
+                            }}
+                            dayOfWeekFormatter={(_, date) => `${date.format("ddd")[0].toUpperCase()}`}
+                        />
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
 

@@ -4,10 +4,12 @@ import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import React, { useState, useLayoutEffect } from "react"
 import { Moment } from "moment"
 
+import { useAvailabillities } from '@/app/_hooks/availability'
 
 import CalendarHeader from './CalendarHeader'
 import CalendarDay from "./CalendarDay"
-import { useAvailabillities } from '@/app/_hooks/availability'
+
+import "../client-calendar.css"
 
 const CalendarCard = () => {
     const [selectedDate, setSelectedDate] = useState<Moment>()

@@ -25,7 +25,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
     }, [availabilities])
 
     const handleSelectDate = () => {
-        if(available) setSelectedDate(props.day)
+        if(available) setSelectedDate?.(props.day)
     }
 
     return (
