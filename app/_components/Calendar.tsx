@@ -29,8 +29,8 @@ import CalendarHeaderMui from "./CalendarHeaderMui"
 import CalendarSlotLabel from './CalendarSlotLabel'
 import CalendarHeader from "./CalendarHeader"
 import CalendarEvent from './CalendarEvent'
-import CalendarDay from "./CalendarDay"
 import WeeklyHeader from "./WeeklyHeader"
+import CalendarDay from "./CalendarDay"
 
 const Calendar: React.FC<ICalendarProps> = () => {
     const calendarRef = useRef<FullCalendar | null>(null)
@@ -98,6 +98,8 @@ const Calendar: React.FC<ICalendarProps> = () => {
             const nextMuiMonth = muiDate.clone().add(1, "month")
             setMuiDate(nextMuiMonth)
         }
+        const api = mobileCalendarRef.current?.getApi()
+        api?.next()
     }
 
     const onMobileCalendarBack = () => {
@@ -107,6 +109,8 @@ const Calendar: React.FC<ICalendarProps> = () => {
             const prevMuiMonth = muiDate.clone().add(-1, "month")
             setMuiDate(prevMuiMonth)
         }
+        const api = mobileCalendarRef.current?.getApi()
+        api?.prev()
     }
 
     return (
@@ -155,9 +159,12 @@ const Calendar: React.FC<ICalendarProps> = () => {
                                     {...props}
                                     selectedDate={selectedDate}
                                     setSelectedDate={setSelectedDate}
+                                    fullcalendarApi={mobileCalendarRef.current?.getApi()}
                                     availabilities={[]}
                                 />,
-                                calendarHeader: CalendarHeaderMui,
+                                calendarHeader: props => <CalendarHeaderMui 
+                                    {...props}
+                                />,
                             }}
                             dayOfWeekFormatter={(_, date) => `${date.format("ddd")[0].toUpperCase()}`}
                         />

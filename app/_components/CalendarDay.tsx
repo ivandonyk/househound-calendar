@@ -10,9 +10,11 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
     selectedDate, 
     setSelectedDate,
     availabilities,
+    fullcalendarApi,
     ...props 
 }) => {
     const handleSelectDate = () => {
+        fullcalendarApi?.gotoDate(props.day.toDate())
         setSelectedDate?.(props.day)
     }
 

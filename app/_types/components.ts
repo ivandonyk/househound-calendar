@@ -8,12 +8,13 @@ import {
     FormikConfig, 
     FormikValues 
 } from "formik"
+import { CalendarApi } from "@fullcalendar/core/index.js"
+import { PickersDayProps } from "@mui/x-date-pickers"
 import { Moment } from "moment"
 
 import { Modals } from "@/app/_constants/constants"
 
-import { IAvailability, IBooking } from "./entities";
-import { PickersDayProps } from "@mui/x-date-pickers";
+import { IAvailability, IBooking } from "./entities"
 
 export interface ICalendarProps {}
 
@@ -78,6 +79,7 @@ export interface ICalendarDayProps extends PickersDayProps<Moment> {
     selectedDate?: Moment;
     setSelectedDate?: React.Dispatch<React.SetStateAction<Moment | undefined>>;
     availabilities: IAvailability[];
+    fullcalendarApi?: CalendarApi;
 }
 
 export interface IWeeklyHeaderProps {
