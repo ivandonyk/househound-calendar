@@ -110,7 +110,7 @@ const CalendarCard = () => {
                     )}>
                         {selectedDate?.format("dddd, MMMM DD")}
                     </div>
-                    {selectedSlot ? <div className='flex flex-row gap-2 w-full mb-[10px]'>
+                    {selectedSlot ? <div className='flex md:pl-[39px] flex-row gap-2 w-full mb-[10px]'>
                         <div className='w-full text-white text-center rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-gray-13'>
                             {selectedSlot.format("hh:mm a")}
                         </div>
