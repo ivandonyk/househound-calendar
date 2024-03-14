@@ -29,12 +29,11 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
     }
 
     return (
-        <div className="h-max md:w-full">
+        <div className="h-max w-full">
             <PickersDay 
                 {...props}
                 className={classNames(
                     "!font-[400] !text-[14px] md:!text-[17px] !leading-[22px] md:!leading-[20px]",
-                    // "!my-[2px] md:!my-0 md:!mx-auto !mb-[4px]",
                     { "!bg-white !text-blue-4": available && !(selectedDate?.format("dddd DD yyyy") === props.day.format("dddd DD yyyy")) },
                     { "!text-gray-10 pointer-events-none": !available },
                     { "!font-[600]": moment().format("dddd DD yyyy") === props.day.format("dddd DD yyyy") },

@@ -61,7 +61,7 @@ const CalendarCard = () => {
                     <DateCalendar
                         classes={{
                             root: "!m-0 !w-[100%]",
-                            viewTransitionContainer: "!bg-gray-12 !rounded-lg"
+                            viewTransitionContainer: "!bg-gray-12 !rounded-lg !px-[10px]"
                         }}
                         slots={{
                             day: props => <CalendarDay 
