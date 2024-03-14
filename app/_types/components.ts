@@ -79,3 +79,9 @@ export interface ICalendarDayProps extends PickersDayProps<Moment> {
     setSelectedDate?: React.Dispatch<React.SetStateAction<Moment | undefined>>;
     availabilities: IAvailability[];
 }
+
+export interface IWeeklyHeaderProps {
+    onBack?: () => void;
+    onNext?: () => void;
+    selectedDate?: Moment;
+}

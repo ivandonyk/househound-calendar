@@ -30,15 +30,18 @@ import CalendarSlotLabel from './CalendarSlotLabel'
 import CalendarHeader from "./CalendarHeader"
 import CalendarEvent from './CalendarEvent'
 import CalendarDay from "./CalendarDay"
+import WeeklyHeader from "./WeeklyHeader"
 
 const Calendar: React.FC<ICalendarProps> = () => {
     const calendarRef = useRef<FullCalendar | null>(null)
+    const mobileCalendarRef = useRef<FullCalendar | null>(null)
     const { setActiveModal } = useModalContext()
     const { setSelectedSlots, events, fetchBookings } = useCalendarContext()
     const { user } = useUserContext()
     const [calendarDate, setCalendarDate] = useState({ start: "",  end: "" })
     const { updateBooking } = useUpdateBooking()
-    const [selectedDate, setSelectedDate] = useState<Moment>()
+    const [selectedDate, setSelectedDate] = useState<Moment | undefined>(moment())
+    const [muiDate, setMuiDate] = useState(moment())
 
     const handleSelect = (startDate: string, endDate: string) => {
         setSelectedSlots({
@@ -81,10 +84,30 @@ const Calendar: React.FC<ICalendarProps> = () => {
 
     useEffect(() => {
         if(!events?.length || !user?.uid) return;
-        const api = calendarRef.current?.getApi()
-        api?.removeAllEventSources()
-        api?.addEventSource(events.map(({ endTime, startTime, title, id }) => ({ id, start: startTime, end: endTime, title })))
+        const apis = [calendarRef.current?.getApi(), mobileCalendarRef.current?.getApi()]
+        apis.forEach(api => {
+            api?.removeAllEventSources()
+            api?.addEventSource(events.map(({ endTime, startTime, title, id }) => ({ id, start: startTime, end: endTime, title })))
+        })
     }, [events, user])
+
+    const onMobileCalendarNext = () => {
+        const nextDay = selectedDate?.clone().add(1, "day")
+        setSelectedDate(nextDay)
+        if(muiDate.month() !== nextDay?.month()) {
+            const nextMuiMonth = muiDate.clone().add(1, "month")
+            setMuiDate(nextMuiMonth)
+        }
+    }
+
+    const onMobileCalendarBack = () => {
+        const prevDay = selectedDate?.clone().add(-1, "day")
+        setSelectedDate(prevDay)
+        if(muiDate.month() !== prevDay?.month()) {
+            const prevMuiMonth = muiDate.clone().add(-1, "month")
+            setMuiDate(prevMuiMonth)
+        }
+    }
 
     return (
         <>
@@ -118,13 +141,15 @@ const Calendar: React.FC<ICalendarProps> = () => {
             </div>
             <div className='md:hidden w-full h-full overflow-auto p-4'>
                 <div className=" w-full">
-                    <div className='w-[100%] md:hidden mb-[45px]'>
+                    <div className='w-[100%] md:hidden'>
                         <DateCalendar
                             classes={{
                                 root: "!m-0 !w-[100%]",
                                 viewTransitionContainer: " !rounded-xl !px-[10px] !bg-blue-5"
                             }}
                             disableHighlightToday
+                            value={muiDate}
+                            onChange={value => setMuiDate(value)}
                             slots={{
                                 day: props => <CalendarDay 
                                     {...props}
@@ -136,6 +161,32 @@ const Calendar: React.FC<ICalendarProps> = () => {
                             }}
                             dayOfWeekFormatter={(_, date) => `${date.format("ddd")[0].toUpperCase()}`}
                         />
+                    </div>
+                    <div className="">
+                        <div className="flex justify-center items-center">
+                            <WeeklyHeader 
+                                onBack={onMobileCalendarBack}
+                                onNext={onMobileCalendarNext}
+                                selectedDate={selectedDate}
+                            />
+                        </div>
+                        <div className="w-full rounded-xl bg-blue-grad px-[10px] py-[20px]">
+                            <FullCalendar 
+                                ref={mobileCalendarRef}
+                                plugins={[timeGridPlugin]}
+                                initialView='timeGridDay'
+                                firstDay={1}
+                                headerToolbar={false}
+                                allDaySlot={false}
+                                dayHeaderClassNames={["!hidden"]}
+                                height="350px"
+                                slotDuration={{ hours: 1 }}
+                                eventContent={props => <div className="bg-[#E7F1FF] flex items-center pl-2 rounded-md h-full text-black-3 text-[12px] leading-[22px] font-[400]">{props.event.title}</div>}
+                                slotLabelContent={props => <div className="font-[600] text-[14px] leading-[22px] pt-2 pb-2">
+                                    {moment(props.date).format("h A")}
+                                </div>}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

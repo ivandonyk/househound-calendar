@@ -43,7 +43,9 @@ const config: Config = {
         "white-grad-2":
           "linear-gradient(143.41deg, #FFFFFF 2.06%, rgba(255, 255, 255, 0.7) 52.2%, rgba(255, 255, 255, 0.3) 98.48%)",
         "white-grad-3":
-          "linear-gradient(143.41deg, #FFFFFF 2.06%, rgba(255, 255, 255, 0.7) 52.2%, rgba(255, 255, 255, 0.3) 98.48%)"
+          "linear-gradient(143.41deg, #FFFFFF 2.06%, rgba(255, 255, 255, 0.7) 52.2%, rgba(255, 255, 255, 0.3) 98.48%)",
+        "blue-grad":
+          "linear-gradient(116.17deg, #09386D 1.28%, rgba(55, 100, 151, 0) 98.13%)"
       },
       height: {
         "full-with-nav": "calc(100vh - 60px)"

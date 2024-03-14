@@ -17,8 +17,10 @@
     border-right: none !important;
 }
 
-.calendar-component .fc-scrollgrid td {
-    border-left: none !important;
+@media only screen and (min-width: 768px) {
+    .calendar-component .fc-scrollgrid td {
+        border-left: none !important;
+    }
 }
 
 .calendar-component .fc-scrollgrid td:last-of-type {
@@ -95,6 +97,41 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .fc-timegrid-event {
+        padding: 0px !important;
+        margin: 0px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 3px 0px !important;
+        padding-left: 3px !important;
+    }
+
+    .fc-event-main {
+        border: none !important;
+    }
+
+    td {
+        border: 0.5px solid !important;
+        border-image-source: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%) !important;
+    }
+
+    .fc-timegrid-axis {
+        border: 0.5px solid !important;
+        border-image-source: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%) !important;
+    }
+
+    .fc-timegrid-slot-label-frame {
+        border-bottom: 0.5px solid #FFFFFF70 !important;
+    }
+
+    .fc-timegrid-slot-label-cushion {
+        color: #FFFFFF80 !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        line-height: 22px !important;
+    }
+
     .MuiPickersSlideTransition-root {
         min-height: 200px !important;
     }
