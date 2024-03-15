@@ -55,15 +55,26 @@ const CalendarCard = () => {
         }
         const selectedDatesAvailabilities = availabilities
             .filter(a => moment(a.from).format("DD dddd MMMM yyyy") === selectedDate.format("DD dddd MMMM yyyy"))
-        const [times] = selectedDatesAvailabilities
+        const times = selectedDatesAvailabilities
             .map(availability => [moment(availability.from).format("hh:mm a"), moment(availability.to).format("hh:mm a")])
-            const gaps = gapTimes
+        let finalGaps: Moment[]  = [];
+        const gaps = gapTimes
             .filter(time => !todayBookedSlots.includes(time.format("hh:mm a")))
-            const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[0])
-            const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[1])
-            let finalGaps = [...gaps]
-            if(startIndex !== -1) finalGaps = finalGaps.slice(startIndex)
-            if(endIndex !== -1) finalGaps = finalGaps.slice(0, endIndex - startIndex)
+        times.map((time)=> {
+            const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[0])
+            const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[1])
+            let tempGaps = [...gaps]
+            if(startIndex !== -1) tempGaps = tempGaps.slice(startIndex)
+            if(endIndex !== -1) tempGaps = tempGaps.slice(0, endIndex - startIndex)
+            finalGaps = [...finalGaps, ...tempGaps]
+        })
+        finalGaps.sort((a, b) => {
+            const momentA = moment(a);
+            const momentB = moment(b);
+
+            // Compare using `.diff()` or `.valueOf()`
+            return momentA.valueOf() - momentB.valueOf(); // ascending order
+        })
         setGapTimes(finalGaps)
     }
 
