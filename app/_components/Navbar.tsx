@@ -12,10 +12,10 @@ const Navbar = () => {
     const { role } = useUserContext()
     const router = useRouter()
     const [routes, setRoutes] = useState<any[]>([])
-    
+
     useEffect(() => {
         const routes = [
-            { label: "Add Availability", to: "/add-availability", role: [Role.Agent] },
+            // { label: "Add Availability", to: "/add-availability", role: [Role.Agent] },
             { label: "Calendar", to: "/", role: [Role.Agent, Role.Client] },
             { label: "Agent Availability", to: "/agent-availability", role: [Role.Agent] },
             { label: "Client Calendar", to: "/client-calendar" }
@@ -38,7 +38,7 @@ const Navbar = () => {
     if(!role) return <></>
     return (
         <div className="w-full flex justify-center flex-wrap items-center gap-4 p-2">
-            {routes.map(({ to, label }) => <div 
+            {routes.map(({ to, label }) => <div
                 key={to}
                 className="cursor-pointer text-black p-2 border-2 border-black rounded-sm"
                 onClick={() => router.push(to)}
