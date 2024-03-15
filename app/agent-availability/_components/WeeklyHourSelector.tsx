@@ -8,10 +8,10 @@ import Image from "next/image"
 import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useUserContext } from "@/app/_context/UserContext"
 
-import { 
-    useAddAvailability, 
+import {
+    useAddAvailability,
     useDeleteAvailability,
-    useUpdateAvailability 
+    useUpdateAvailability
 } from "@/app/_hooks/availability"
 
 import Select from "@/app/_components/Select"
@@ -66,24 +66,30 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
 
     const handleDeleteSlot = (id: string) => deleteAvailability(id)
 
-    const filteredAvailabilities = availabilities.filter(({ to, from }) => moment(to).day() === day.day())
+    const filteredAvailabilities = availabilities.filter(({ to, from }) => moment(to).day() === day.day()).sort((a, b) => {
+        const momentA = moment(a.from);
+        const momentB = moment(b.from);
+
+        // Compare using `.diff()` or `.valueOf()`
+        return momentA.valueOf() - momentB.valueOf(); // ascending order
+    })
 
     const expanded = checked || filteredAvailabilities.length;
 
     return (
         <div className="flex flex-row mt-[32px]">
-            {expanded ? 
-                <Image 
+            {expanded ?
+                <Image
                     className={classNames(
                         "cursor-pointer",
                         { "max-h-[30px] md:max-h-[44px]": expanded },
                         { "max-h-[18px] md:max-h-[20px]": !expanded },
                     )}
-                    src={blueCheckSvg} 
-                    alt="" 
+                    src={blueCheckSvg}
+                    alt=""
                 />
-            : <div 
-                className="md:w-[20px] w-[18px] md:h-[20px] h-[18px] cursor-pointer rounded-[2px] border-black border-[0.5px]" 
+            : <div
+                className="md:w-[20px] w-[18px] md:h-[20px] h-[18px] cursor-pointer rounded-[2px] border-black border-[0.5px]"
             />}
             <div className={classNames(
                 "font-[500] w-[25px] md:w-[40px] text-[14px] md:text-[18px] leading-[20px] text-black-3 ml-[12px]",
@@ -95,13 +101,13 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                 {!filteredAvailabilities?.length && !checked ? 'Unavailable' : <>
                     {filteredAvailabilities
                         .map((slot, idx) => <div key={idx} className="flex flex-row gap-[7px]">
-                        <Select 
+                        <Select
                             options={gapTimes}
                             onChange={handleUpdateSlot("from", slot.id)}
                             value={moment(slot.from).format("hh:mm a").toLowerCase()}
                         />
                         <Image src={dotSvg} alt="" />
-                        <Select 
+                        <Select
                             options={gapTimes}
                             onChange={handleUpdateSlot("to", slot.id)}
                             value={moment(slot.to).format("hh:mm a").toLowerCase()}
@@ -115,13 +121,13 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                     </div>)}
                 </>}
                 {checked ? <div className="flex flex-row gap-[7px]">
-                    <Select 
+                    <Select
                         options={gapTimes}
                         onChange={date => setFrom(date)}
                         value={from ? moment(from).format("hh:mm a").toLowerCase() : ""}
                     />
                     <Image src={dotSvg} alt="" />
-                    <Select 
+                    <Select
                         options={gapTimes}
                         onChange={date => setTo(date)}
                         value={to ? moment(to).format("hh:mm a").toLowerCase() : ""}
@@ -147,7 +153,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                 <div className="w-[18px] h-[18px] bg-white absolute" />
                 <Image
                     className="w-[20px] h-[20px] ml-auto cursor-pointer z-10"
-                    src={plusBlueSvg} 
+                    src={plusBlueSvg}
                     alt=""
                     onClick={() => setIsChecked(true)}
                 />
