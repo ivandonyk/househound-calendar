@@ -22,12 +22,12 @@ const CalendarCard = () => {
     const [gapTimes, setGapTimes] = useState<Moment[]>([])
     const agentId = "KNuJBnSn2gfAV6mYqGKWtNG0WFi1"
     const { availabilities } = useAvailabillities(agentId)
-    const { bookings } = useBookings(agentId)
+    const { bookings, fetchBookings } = useBookings(agentId)
     const [selectedSlot, setSelectedSlot] = useState<Moment>()
     const { addBooking, isCreatingBooking } = useCreateBooking()
     const { setActiveModal } = useModalContext()
 
-    useLayoutEffect(() => {
+    const generateIntervals = () => {
         if(!selectedDate || !bookings) return;
         const todayBookings = bookings.filter(booking => {
             const bookingTime = moment(booking.startTime).format("DD dddd MMMM yyyy")
@@ -54,6 +54,10 @@ const CalendarCard = () => {
             }
         }
         setGapTimes(gapTimes.filter(time => !todayBookedSlots.includes(time.format("hh:mm a"))))
+    }
+
+    useLayoutEffect(() => {
+        generateIntervals()
     }, [selectedDate, bookings])
 
     const handleCreate = async() => {
@@ -65,6 +69,8 @@ const CalendarCard = () => {
             title: "",
             uuids: [agentId]
         })
+        await fetchBookings()
+        setSelectedSlot(undefined)
         setActiveModal(Modals.AppointmentCreated)
     }
 

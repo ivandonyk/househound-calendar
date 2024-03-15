@@ -52,7 +52,7 @@ export const useBookings = (id: string) => {
         fetchBookings()
     }, [])
 
-    return { bookings, isGettingBookings: loading }
+    return { bookings, isGettingBookings: loading, fetchBookings }
 }
 
 export const useCreateBooking = () => {
