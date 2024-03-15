@@ -1,8 +1,6 @@
 "use client"
 
-import interactionPlugin, { 
-    EventResizeDoneArg
-} from "@fullcalendar/interaction"
+import { EventResizeDoneArg } from "@fullcalendar/interaction"
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import { EventDropArg } from "@fullcalendar/core/index.js"
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -120,9 +118,8 @@ const Calendar: React.FC<ICalendarProps> = () => {
                 <FullCalendar
                     ref={calendarRef}
                     datesSet={date => setCalendarDate({ start: date.startStr, end: date.endStr })}
-                    plugins={[timeGridPlugin, interactionPlugin]}
+                    plugins={[timeGridPlugin]}
                     initialView='timeGridWeek'
-                    editable
                     firstDay={1}
                     eventOverlap={false}
                     eventResize={handleResizeEvent}
