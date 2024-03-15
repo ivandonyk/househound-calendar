@@ -10,7 +10,7 @@ import {
     where,
     deleteDoc,
 } from "firebase/firestore"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import moment from "moment"
 import { toast } from "react-hot-toast"
 
@@ -26,9 +26,33 @@ import {
 
 import { Role } from "@/app/_constants/constants"
 
-import { IAvailability } from "@/app/_types/entities"
+import { IAvailability, IBooking } from "@/app/_types/entities"
 
-export const useBookings = () => {
+export const useBookings = (id: string) => {
+    const [bookings, setBookings] = useState<IBooking[]>([])
+    const [loading, setLoading] = useState(false)
+
+    const fetchBookings = async() => {
+        try {
+            setLoading(true)
+            const snapshot = await getDocs(query(collection(db, "bookings"), 
+                where("uuids", "array-contains", id)
+            ))
+            const list: IBooking[] = []
+            snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IBooking), id: doc.id }))
+            setBookings(list)
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchBookings()
+    }, [])
+
+    return { bookings, isGettingBookings: loading }
 }
 
 export const useCreateBooking = () => {

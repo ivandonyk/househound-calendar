@@ -2,13 +2,13 @@
 
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
 import React, { useState, useLayoutEffect } from "react"
+import moment, { Moment } from "moment"
 import classNames from 'classnames'
-import { Moment } from "moment"
 
 import { useModalContext } from '@/app/_context/ModalContext'
 
 import { useAvailabillities } from '@/app/_hooks/availability'
-import { useCreateBooking } from '@/app/_hooks/booking'
+import { useBookings, useCreateBooking } from '@/app/_hooks/booking'
 
 import { Modals } from '@/app/_constants/constants'
 
@@ -22,23 +22,39 @@ const CalendarCard = () => {
     const [gapTimes, setGapTimes] = useState<Moment[]>([])
     const agentId = "KNuJBnSn2gfAV6mYqGKWtNG0WFi1"
     const { availabilities } = useAvailabillities(agentId)
+    const { bookings } = useBookings(agentId)
     const [selectedSlot, setSelectedSlot] = useState<Moment>()
     const { addBooking, isCreatingBooking } = useCreateBooking()
     const { setActiveModal } = useModalContext()
 
     useLayoutEffect(() => {
-        if(!selectedDate) return;
+        if(!selectedDate || !bookings) return;
+        const todayBookings = bookings.filter(booking => {
+            const bookingTime = moment(booking.startTime).format("DD dddd MMMM yyyy")
+            const selectedDateTime = selectedDate.format("DD dddd MMMM yyyy")
+            return bookingTime === selectedDateTime
+        })
+        const todayBookedSlots = todayBookings.map(booking => moment(booking.startTime).format("hh:mm a"))
         const intervalsPerHour = 4
         const totalHours = 24
-        const gapTimes = []
+        const gapTimes: Moment[] = []
+        const time = selectedDate
+            .clone()
+            .set("hour", 0)
+            .set("minute", 0)
+            .set("second", 0)
+            .set("millisecond", 0)
         for (let hour = 0; hour < totalHours; hour++) {
             for (let i = 0; i < intervalsPerHour; i++) {
-                const time = selectedDate.clone().add(hour, 'hours').add(i * 30, 'minutes');
-                gapTimes.push(time)
+                const calcTime = time
+                    .clone()
+                    .add(hour, 'hours')
+                    .add(i * 30, 'minutes')
+                if(!gapTimes.filter(time => time.format("hh:mm a") === calcTime.format("hh:mm a"))?.length) gapTimes.push(calcTime)
             }
         }
-        setGapTimes(gapTimes)
-    }, [selectedDate])
+        setGapTimes(gapTimes.filter(time => !todayBookedSlots.includes(time.format("hh:mm a"))))
+    }, [selectedDate, bookings])
 
     const handleCreate = async() => {
         if(isCreatingBooking || !selectedSlot) return
