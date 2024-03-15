@@ -1,7 +1,7 @@
 "use client"
 
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
-import React, { useState, useLayoutEffect } from "react"
+import React, { useState, useLayoutEffect, useEffect } from "react"
 import moment, { Moment } from "moment"
 import classNames from 'classnames'
 
@@ -55,6 +55,10 @@ const CalendarCard = () => {
         }
         setGapTimes(gapTimes.filter(time => !todayBookedSlots.includes(time.format("hh:mm a"))))
     }
+
+    useEffect(() => {
+        setSelectedSlot(undefined)
+    }, [selectedDate])
 
     useLayoutEffect(() => {
         generateIntervals()
