@@ -43,7 +43,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
 
         for (let hour = 0; hour < totalHours; hour++) {
             for (let i = 0; i < intervalsPerHour; i++) {
-                const time = day.clone().add(hour, 'hours').add(i * 15, 'minutes');
+                const time = day.clone().add(hour, 'hours').add(i * 30, 'minutes');
                 gapTimes.push(time)
             }
         }

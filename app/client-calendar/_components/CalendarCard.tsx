@@ -28,7 +28,7 @@ const CalendarCard = () => {
     const { setActiveModal } = useModalContext()
 
     const generateIntervals = () => {
-        if(!selectedDate || !bookings) return;
+        if(!selectedDate || !bookings?.length || !availabilities?.length) return;
         const todayBookings = bookings.filter(booking => {
             const bookingTime = moment(booking.startTime).format("DD dddd MMMM yyyy")
             const selectedDateTime = selectedDate.format("DD dddd MMMM yyyy")
@@ -53,7 +53,18 @@ const CalendarCard = () => {
                 if(!gapTimes.filter(time => time.format("hh:mm a") === calcTime.format("hh:mm a"))?.length) gapTimes.push(calcTime)
             }
         }
-        setGapTimes(gapTimes.filter(time => !todayBookedSlots.includes(time.format("hh:mm a"))))
+        const selectedDatesAvailabilities = availabilities
+            .filter(a => moment(a.from).format("DD dddd MMMM yyyy") === selectedDate.format("DD dddd MMMM yyyy"))
+        const [times] = selectedDatesAvailabilities
+            .map(availability => [moment(availability.from).format("hh:mm a"), moment(availability.to).format("hh:mm a")])
+        const gaps = gapTimes
+            .filter(time => !todayBookedSlots.includes(time.format("hh:mm a")))
+        const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[0])
+        const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[1])
+        let finalGaps = [...gaps]
+        if(startIndex !== -1) finalGaps = finalGaps.slice(startIndex)
+        if(endIndex !== -1) finalGaps = finalGaps.slice(0, endIndex)
+        setGapTimes(finalGaps)
     }
 
     useEffect(() => {
@@ -62,7 +73,7 @@ const CalendarCard = () => {
 
     useLayoutEffect(() => {
         generateIntervals()
-    }, [selectedDate, bookings])
+    }, [selectedDate, availabilities, bookings])
 
     const handleCreate = async() => {
         if(isCreatingBooking || !selectedSlot) return
