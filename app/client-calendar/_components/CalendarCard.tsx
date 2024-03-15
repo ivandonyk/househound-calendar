@@ -57,13 +57,13 @@ const CalendarCard = () => {
             .filter(a => moment(a.from).format("DD dddd MMMM yyyy") === selectedDate.format("DD dddd MMMM yyyy"))
         const [times] = selectedDatesAvailabilities
             .map(availability => [moment(availability.from).format("hh:mm a"), moment(availability.to).format("hh:mm a")])
-        const gaps = gapTimes
+            const gaps = gapTimes
             .filter(time => !todayBookedSlots.includes(time.format("hh:mm a")))
-        const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[0])
-        const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[1])
-        let finalGaps = [...gaps]
-        if(startIndex !== -1) finalGaps = finalGaps.slice(startIndex)
-        if(endIndex !== -1) finalGaps = finalGaps.slice(0, endIndex)
+            const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[0])
+            const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === times[1])
+            let finalGaps = [...gaps]
+            if(startIndex !== -1) finalGaps = finalGaps.slice(startIndex)
+            if(endIndex !== -1) finalGaps = finalGaps.slice(0, endIndex - startIndex)
         setGapTimes(finalGaps)
     }
 
@@ -107,10 +107,10 @@ const CalendarCard = () => {
                             root: "!m-0 !w-[100%]",
                         }}
                         slots={{
-                            day: props => <CalendarDay 
-                                {...props} 
-                                selectedDate={selectedDate} 
-                                setSelectedDate={setSelectedDate} 
+                            day: props => <CalendarDay
+                                {...props}
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
                                 availabilities={availabilities}
                             />,
                             calendarHeader: CalendarHeader,
@@ -125,10 +125,10 @@ const CalendarCard = () => {
                             viewTransitionContainer: "!bg-gray-12 !rounded-lg !px-[10px]"
                         }}
                         slots={{
-                            day: props => <CalendarDay 
-                                {...props} 
-                                selectedDate={selectedDate} 
-                                setSelectedDate={setSelectedDate} 
+                            day: props => <CalendarDay
+                                {...props}
+                                selectedDate={selectedDate}
+                                setSelectedDate={setSelectedDate}
                                 availabilities={availabilities}
                             />,
                             calendarHeader: CalendarHeader,
@@ -151,7 +151,7 @@ const CalendarCard = () => {
                         <div className='w-full h-[55px] text-white grid place-items-center rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-gray-13'>
                             {selectedSlot.format("hh:mm a")}
                         </div>
-                        <div 
+                        <div
                             className='w-full cursor-pointer h-[55px] grid place-items-center text-white rounded-md px-[7px] py-[12px] font-[500] text-[15px] leading-[20px] bg-blue-4'
                             onClick={handleCreate}
                         >
@@ -159,7 +159,7 @@ const CalendarCard = () => {
                         </div>
                     </div> : <></>}
                     <div className='w-full flex flex-col gap-[11px] md:pl-[39px] h-[250px] overflow-auto'>
-                        {gapTimes.map(time => <div 
+                        {gapTimes.map(time => <div
                             key={time.toISOString()}
                             onClick={() => setSelectedSlot(time)}
                             className='px-[50px] cursor-pointer py-[12px] border-[1px] border-gray-11 rounded-md flex justify-center items-center'
