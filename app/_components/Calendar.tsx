@@ -85,7 +85,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
         const apis = [calendarRef.current?.getApi(), mobileCalendarRef.current?.getApi()]
         apis.forEach(api => {
             api?.removeAllEventSources()
-            api?.addEventSource(events.map(({ endTime, startTime, title, id }) => ({ id, start: startTime, end: endTime, title })))
+            api?.addEventSource(events.map(({ startTime, title, id }) => ({ id, start: startTime, title })))
         })
     }, [events, user])
 
