@@ -25,26 +25,25 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
                 moment(event.startTime).isSameOrAfter(week[0])
                 && moment(event.startTime).isSameOrBefore(week[6])
             )
+            console.log(filtered)
             setWeeklyEvents(filtered)
         }
     }, [events, week])
 
     useEffect(() => {
-        if(weeklyEvents.length) {
-            const temp: IDailyParsedEvent[] = []
-            week.forEach(day => {
-                const dayEnd = day.clone().set('hour', 23).set("minute", 59).set("second", 59)
-                const dailyEvents = weeklyEvents.filter(event => 
-                    moment(event.startTime).isSameOrAfter(day)
-                    && moment(event.startTime).isSameOrBefore(dayEnd)
-                )
-                if(dailyEvents.length) temp.push({
-                    date: day,
-                    events: dailyEvents
-                })
+        const temp: IDailyParsedEvent[] = []
+        week.forEach(day => {
+            const dayEnd = day.clone().set('hour', 23).set("minute", 59).set("second", 59)
+            const dailyEvents = weeklyEvents.filter(event => 
+                moment(event.startTime).isSameOrAfter(day)
+                && moment(event.startTime).isSameOrBefore(dayEnd)
+            )
+            if(dailyEvents.length) temp.push({
+                date: day,
+                events: dailyEvents
             })
-            setDailyParsedEvents(temp)
-        }
+        })
+        setDailyParsedEvents(temp)
     }, [weeklyEvents])
 
     const handleDelete = (id: string) => {
