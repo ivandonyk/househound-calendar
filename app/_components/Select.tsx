@@ -1,7 +1,7 @@
 "use client"
 
 import classNames from "classnames"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
 import { ISelectProps } from "@/app/_types/components"
 
@@ -12,20 +12,24 @@ const Select: React.FC<ISelectProps> = ({
  }) => {
     const [selected, setSelected] = useState("")
     const [active, setActive] = useState(false)
+    const divRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if(value) setSelected(value)
     }, [value])
 
     useEffect(() => {
-        const listener = () => {}
-        document.addEventListener("click" , e => {
-
-        })
+        const listener = (e: MouseEvent) => {
+            if(e.target !== divRef.current && !divRef.current?.contains(e.target as Node)) {
+                setActive(false)
+            }
+        }
+        document.addEventListener("click" , listener)
+        return () => document.removeEventListener("click", listener)
     }, [])
 
     return (
-        <div className="relative">
+        <div ref={divRef} className="relative">
             <input
                 className={classNames(
                     "w-[75px] h-[30px] md:w-[100px] md:h-[44px] rounded-[5px] border-[0.7px] border-gray-8 text-black-3 bg-transparent",
