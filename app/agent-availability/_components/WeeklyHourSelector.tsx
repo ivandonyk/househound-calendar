@@ -37,7 +37,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
     const { deleteAvailability } = useDeleteAvailability()
 
     useLayoutEffect(() => {
-        const intervalsPerHour = 4
+        const intervalsPerHour = 2
         const totalHours = 24
         const gapTimes = []
 

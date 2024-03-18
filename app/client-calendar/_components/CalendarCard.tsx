@@ -35,7 +35,7 @@ const CalendarCard = () => {
             return bookingTime === selectedDateTime
         })
         const todayBookedSlots = todayBookings.map(booking => moment(booking.startTime).format("hh:mm a"))
-        const intervalsPerHour = 4
+        const intervalsPerHour = 2
         const totalHours = 24
         const gapTimes: Moment[] = []
         const time = selectedDate
