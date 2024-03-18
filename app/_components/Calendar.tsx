@@ -185,7 +185,11 @@ const Calendar: React.FC<ICalendarProps> = () => {
                                 dayHeaderClassNames={["!hidden"]}
                                 height="350px"
                                 slotDuration={{ hours: 1 }}
-                                eventContent={props => <div className="bg-[#E7F1FF] flex items-center pl-2 rounded-md h-full text-black-3 text-[12px] leading-[22px] font-[400]">{props.event.title}</div>}
+                                eventContent={props => <div className="bg-[#E7F1FF] flex items-center pl-2 rounded-md h-full text-black-3 text-[12px] leading-[22px] font-[400]">
+                                    <div>{moment(props?.event?._instance?.range?.start).utc().format("h:mm A")}</div>
+                                    <div>-</div>
+                                    <div>{moment(props?.event?._instance?.range?.end).utc().format("h:mm A")}</div>
+                                </div>}
                                 slotLabelContent={props => <div className="font-[600] text-[14px] leading-[22px] pt-2 pb-2">
                                     {moment(props.date).format("h A")}
                                 </div>}
