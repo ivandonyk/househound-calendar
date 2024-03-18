@@ -23,7 +23,7 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
         if(events.length) {
             const filtered = events.filter(event => 
                 moment(event.startTime).isSameOrAfter(week[0])
-                && moment(event.endTime).isSameOrBefore(week[6])
+                && moment(event.startTime).isSameOrBefore(week[6])
             )
             setWeeklyEvents(filtered)
         }
@@ -36,7 +36,7 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
                 const dayEnd = day.clone().set('hour', 23).set("minute", 59).set("second", 59)
                 const dailyEvents = weeklyEvents.filter(event => 
                     moment(event.startTime).isSameOrAfter(day)
-                    && moment(event.endTime).isSameOrBefore(dayEnd)
+                    && moment(event.startTime).isSameOrBefore(dayEnd)
                 )
                 if(dailyEvents.length) temp.push({
                     date: day,
@@ -58,13 +58,19 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
                 <div className="font-[400] text-[16px] leading-[22px] text-gray-9">
                     {date.format("dddd DD")}
                 </div>
-                {events.map(event => <div className="w-full rounded-md bg-blue-2 text-white flex flex-row px-[15px] py-[10px]">
-                    <div className="font-[600] w-[40px] text-[14px] leading-[22px]">
-                        {moment(event.startTime).format("hh:mm")}
+                {events
+                    .sort((a, b) => {
+                        const momentA = moment(a.startTime)
+                        const momentB = moment(b.startTime)
+                        return momentA.valueOf() - momentB.valueOf()
+                    })
+                    .map(event => <div className="w-full rounded-md bg-blue-2 text-white flex flex-row px-[15px] py-[10px]">
+                    <div className="font-[600] w-[80px] text-[14px] leading-[22px]">
+                        {moment(event.startTime).format("hh:mm a")}
                     </div>
-                    <div className="font-[400] ml-[15px] text-[14px] leading-[22px]">
+                    {/* <div className="font-[400] ml-[15px] text-[14px] leading-[22px]">
                         {event.title}
-                    </div>
+                    </div> */}
                     <Image 
                         className="ml-auto cursor-pointer"
                         src={whiteDeleteSvg}
