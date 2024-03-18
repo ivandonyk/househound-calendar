@@ -58,11 +58,10 @@ const CalendarCard = () => {
         const times = selectedDatesAvailabilities
             .map(availability => [moment(availability.from), moment(availability.to)])
         let finalGaps: Moment[]  = [];
-        const gaps = gapTimes.filter(time => !todayBookedSlots.includes(time.format("hh:mm a")))
         times.forEach(time => {
-            const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[0].format("hh:mm a"))
-            const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[1].format("hh:mm a"))
-            let tempGaps = [...gaps]
+            const startIndex = gapTimes.findIndex(gap => gap.format("hh:mm a") === time[0].format("hh:mm a"))
+            const endIndex = gapTimes.findIndex(gap => gap.format("hh:mm a") === time[1].format("hh:mm a"))
+            let tempGaps = [...gapTimes]
             if(startIndex !== -1) tempGaps = tempGaps.slice(startIndex)
             if(endIndex !== -1) tempGaps = tempGaps.slice(0, endIndex - (startIndex !== -1 ? startIndex : 0))
             finalGaps = [...finalGaps, ...tempGaps]
@@ -74,7 +73,7 @@ const CalendarCard = () => {
             // Compare using `.diff()` or `.valueOf()`
             return momentA.valueOf() - momentB.valueOf(); // ascending order
         })
-        setGapTimes(finalGaps)
+        setGapTimes(finalGaps.filter(time => !todayBookedSlots.includes(time.format("hh:mm a"))))
     }
 
     useEffect(() => {
