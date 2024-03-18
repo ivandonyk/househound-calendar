@@ -20,12 +20,11 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
     const { deleteBooking, isDeletingBooking } = useDeleteBooking()
 
     useEffect(() => {
-        if(events.length) {
+        if(events) {
             const filtered = events.filter(event => 
                 moment(event.startTime).isSameOrAfter(week[0])
                 && moment(event.startTime).isSameOrBefore(week[6])
             )
-            console.log(filtered)
             setWeeklyEvents(filtered)
         }
     }, [events, week])

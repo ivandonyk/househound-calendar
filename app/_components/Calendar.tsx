@@ -86,7 +86,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
         apis.forEach(api => {
             api?.removeAllEventSources()
             api?.addEventSource(events.map(({ startTime, title, id }) => {
-                const end = moment(startTime).clone().set("minutes", 30).toISOString()
+                const end = moment(startTime).add("minutes", 30).toISOString()
                 return { id, start: startTime, title, end }
             }))
         })
