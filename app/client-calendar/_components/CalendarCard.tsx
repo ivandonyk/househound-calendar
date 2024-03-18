@@ -28,7 +28,7 @@ const CalendarCard = () => {
     const { setActiveModal } = useModalContext()
 
     const generateIntervals = () => {
-        if(!selectedDate || !bookings?.length || !availabilities?.length) return;
+        if(!selectedDate || !bookings || !availabilities?.length) return;
         const todayBookings = bookings.filter(booking => {
             const bookingTime = moment(booking.startTime).format("DD dddd MMMM yyyy")
             const selectedDateTime = selectedDate.format("DD dddd MMMM yyyy")
