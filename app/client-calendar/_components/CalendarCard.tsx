@@ -10,6 +10,8 @@ import { useModalContext } from '@/app/_context/ModalContext'
 import { useAvailabillities } from '@/app/_hooks/availability'
 import { useBookings, useCreateBooking } from '@/app/_hooks/booking'
 
+import { formatMoment, getMoment } from '@/app/_utils/date'
+
 import { Modals } from '@/app/_constants/constants'
 
 import CalendarHeader from './CalendarHeader'
@@ -30,11 +32,11 @@ const CalendarCard = () => {
     const generateIntervals = () => {
         if(!selectedDate || !bookings || !availabilities?.length) return;
         const todayBookings = bookings.filter(booking => {
-            const bookingTime = moment(booking.startTime).format("DD dddd MMMM yyyy")
+            const bookingTime = getMoment(booking.startTime).format("DD dddd MMMM yyyy")
             const selectedDateTime = selectedDate.format("DD dddd MMMM yyyy")
             return bookingTime === selectedDateTime
         })
-        const todayBookedSlots = todayBookings.map(booking => moment(booking.startTime).format("hh:mm a"))
+        const todayBookedSlots = todayBookings.map(booking => getMoment(booking.startTime).format("hh:mm a"))
         const intervalsPerHour = 2
         const totalHours = 24
         const gapTimes: Moment[] = []
@@ -54,9 +56,9 @@ const CalendarCard = () => {
             }
         }
         const selectedDatesAvailabilities = availabilities
-            .filter(a => moment(a.from).format("DD dddd MMMM yyyy") === selectedDate.format("DD dddd MMMM yyyy"))
+            .filter(a => getMoment(a.from).format("DD dddd MMMM yyyy") === selectedDate.format("DD dddd MMMM yyyy"))
         const times = selectedDatesAvailabilities
-            .map(availability => [moment(availability.from), moment(availability.to)])
+            .map(availability => [getMoment(availability.from), getMoment(availability.to)])
         let finalGaps: Moment[]  = [];
         times.forEach(time => {
             const startIndex = gapTimes.findIndex(gap => gap.format("hh:mm a") === time[0].format("hh:mm a"))
@@ -89,7 +91,7 @@ const CalendarCard = () => {
         await addBooking({
             endTime: "",
             notes: "",
-            startTime: selectedSlot.toISOString(),
+            startTime: formatMoment(selectedSlot),
             title: "",
             uuids: [agentId]
         })

@@ -12,7 +12,6 @@ import {
     query, 
     where 
 } from "firebase/firestore"
-import moment from "moment"
 
 import { 
     ICalendarContext, 
@@ -20,6 +19,8 @@ import {
 } from "@/app/_types/context"
 
 import { IAvailability, IBooking } from "@/app/_types/entities"
+
+import { formatMoment, getMoment } from "@/app/_utils/date"
 
 import { db } from "@/app/_lib/firebase/firebase"
 
@@ -60,8 +61,8 @@ const CalendarProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
             snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IAvailability), id: doc.id }))
             const parsed = list.map((item: any) => ({ 
                 ...item, 
-                to: item?.to ? moment(item.to.seconds*1000).toISOString() : undefined,
-                from: item?.from ? moment(item.from.seconds*1000).toISOString() : undefined,
+                to: item?.to ? getMoment(item.to) : undefined,
+                from: item?.from ? getMoment(item.from) : undefined,
             }))
             setAvailabilities(parsed)
         } catch (error) {
@@ -76,7 +77,14 @@ const CalendarProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
                 where("uuids", "array-contains", user.uid)
             ))
             const list: IBooking[] = []
-            snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IBooking), id: doc.id }))
+            snapshot?.forEach(doc => {
+                const booking = doc.data() as unknown as IBooking
+                list.push({ 
+                    ...booking, 
+                    startTime: formatMoment(getMoment(booking.startTime)),
+                    id: doc.id 
+                })
+            })
             setEvents(list)
         } catch (error) {
             console.log(error)

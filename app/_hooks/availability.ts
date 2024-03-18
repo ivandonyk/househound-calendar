@@ -4,19 +4,20 @@ import {
     addDoc, 
     collection,
     doc,
-    Timestamp,
     updateDoc,
     deleteDoc,
     getDocs,
     query,
     where,
 } from "firebase/firestore"
-import moment, { Moment } from "moment"
+import { Moment } from "moment"
 import { useEffect, useState } from "react"
 
 import { db } from "@/app/_lib/firebase/firebase"
 
 import { useCalendarContext } from "@/app/_context/CalendarContext"
+
+import { formatMoment, getMoment } from "@/app/_utils/date"
 
 import { IAvailability } from "@/app/_types/entities"
 
@@ -32,8 +33,8 @@ export const useAvailabillities = (agentId: string) => {
             snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IAvailability), id: doc.id }))
             const parsed = list.map((item: any) => ({ 
                 ...item, 
-                to: item?.to ? moment(item.to.seconds*1000).toISOString() : undefined,
-                from: item?.from ? moment(item.from.seconds*1000).toISOString() : undefined,
+                to: item?.to ? getMoment(item.to) : undefined,
+                from: item?.from ? getMoment(item.from) : undefined,
             }))
             setAvailabilities(parsed)
         } catch (error) {
@@ -57,8 +58,8 @@ export const useAddAvailability = () => {
             setLoading(true)
             await addDoc(collection(db, "availability"), {
                 uid,
-                to: Timestamp.fromDate(to.clone().utc().toDate()),
-                from: Timestamp.fromDate(from.clone().utc().toDate()),
+                to: formatMoment(to),
+                from: formatMoment(from),
             })
             await fetchAvailabilities()
             setLoading(false)
@@ -81,8 +82,8 @@ export const useUpdateAvailability = () => {
             setLoading(true)
             const docRef = doc(db, "availability", id)
             const payload = {
-                to: !to ? to : Timestamp.fromDate(to.utc().toDate()),
-                from: !from ? from  :Timestamp.fromDate(from.utc().toDate()),
+                to: !to ? to : formatMoment(to),
+                from: !from ? from : formatMoment(from),
             }
             if(!payload.to) delete payload.to
             if(!payload.from) delete payload.from

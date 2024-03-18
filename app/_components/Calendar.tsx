@@ -1,8 +1,6 @@
 "use client"
 
-import { EventResizeDoneArg } from "@fullcalendar/interaction"
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar'
-import { EventDropArg } from "@fullcalendar/core/index.js"
 import timeGridPlugin from '@fullcalendar/timegrid'
 import FullCalendar from '@fullcalendar/react'
 import React, { 
@@ -16,11 +14,11 @@ import { useCalendarContext } from "@/app/_context/CalendarContext"
 import { useModalContext } from "@/app/_context/ModalContext"
 import { useUserContext } from "@/app/_context/UserContext"
 
-import { useUpdateBooking } from "@/app/_hooks/booking"
-
 import { Modals } from "@/app/_constants/constants"
 
 import { ICalendarProps } from '@/app/_types/components'
+
+import { getMoment } from '@/app/_utils/date'
 
 import CalendarDayHeader from './CalendarDayHeader'
 import CalendarHeaderMui from "./CalendarHeaderMui"
@@ -34,10 +32,9 @@ const Calendar: React.FC<ICalendarProps> = () => {
     const calendarRef = useRef<FullCalendar | null>(null)
     const mobileCalendarRef = useRef<FullCalendar | null>(null)
     const { setActiveModal } = useModalContext()
-    const { setSelectedSlots, events, fetchBookings } = useCalendarContext()
+    const { setSelectedSlots, events } = useCalendarContext()
     const { user } = useUserContext()
     const [calendarDate, setCalendarDate] = useState({ start: "",  end: "" })
-    const { updateBooking } = useUpdateBooking()
     const [selectedDate, setSelectedDate] = useState<Moment | undefined>(moment())
     const [muiDate, setMuiDate] = useState(moment())
 
@@ -59,35 +56,14 @@ const Calendar: React.FC<ICalendarProps> = () => {
         api?.prev()
     }
 
-    const handleResizeEvent = async(eventArg: EventResizeDoneArg) => {
-        const ids = events?.find(event => event.id === eventArg.event.id)?.uuids || []
-        await updateBooking({
-            id: eventArg.event.id,
-            endTime: moment(eventArg.event.end).toISOString(),
-            uuids: ids
-        })
-        fetchBookings()
-    }
-
-    const handleDropEvent = async(eventArg: EventDropArg) => {
-        const ids = events?.find(event => event.id === eventArg.event.id)?.uuids || []
-        await updateBooking({
-            id: eventArg.event.id,
-            startTime: moment(eventArg.event.start).toISOString(),
-            endTime: moment(eventArg.event.end).toISOString(),
-            uuids: ids,
-        })
-        fetchBookings()
-    }
-
     useEffect(() => {
         if(!events?.length || !user?.uid) return;
         const apis = [calendarRef.current?.getApi(), mobileCalendarRef.current?.getApi()]
         apis.forEach(api => {
             api?.removeAllEventSources()
             api?.addEventSource(events.map(({ startTime, title, id }) => {
-                const end = moment(startTime).add("minutes", 30).toISOString()
-                return { id, start: startTime, title, end }
+                const end = getMoment(startTime).add("minutes", 30).toISOString()
+                return { id, start: getMoment(startTime).toISOString(), title, end }
             }))
         })
     }, [events, user])
@@ -125,8 +101,6 @@ const Calendar: React.FC<ICalendarProps> = () => {
                     initialView='timeGridWeek'
                     firstDay={1}
                     eventOverlap={false}
-                    eventResize={handleResizeEvent}
-                    eventDrop={handleDropEvent}
                     headerToolbar={false}
                     selectOverlap={false}
                     allDaySlot={false}

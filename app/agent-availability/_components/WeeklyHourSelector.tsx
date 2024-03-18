@@ -22,6 +22,7 @@ import blueCheckSvg from "@/public/blueCheck.svg"
 import crossGraySvg from "@/public/crossGray.svg"
 import plusBlueSvg from "@/public/plusBlue.svg"
 import dotSvg from "@/public/dot.svg"
+import { getMoment } from "@/app/_utils/date"
 
 const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
     day
@@ -68,9 +69,11 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
 
     const handleDeleteSlot = (id: string) => deleteAvailability(id)
 
-    const filteredAvailabilities = availabilities.filter(({ to, from }) => moment(to).day() === day.day()).sort((a, b) => {
-        const momentA = moment(a.from);
-        const momentB = moment(b.from);
+    const filteredAvailabilities = availabilities
+        .filter(({ to, from }) => getMoment(to).day() === day.day())
+        .sort((a, b) => {
+        const momentA = getMoment(a.from);
+        const momentB = getMoment(b.from);
 
         // Compare using `.diff()` or `.valueOf()`
         return momentA.valueOf() - momentB.valueOf(); // ascending order
@@ -106,13 +109,13 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                         <Select
                             options={gapTimes}
                             onChange={handleUpdateSlot("from", slot.id)}
-                            value={moment(slot.from).format("hh:mm a").toLowerCase()}
+                            value={getMoment(slot.from).format("hh:mm a").toLowerCase()}
                         />
                         <Image src={dotSvg} alt="" />
                         <Select
-                            options={gapTimes.slice(gapTimes.findIndex(time => time.format("hh:mm a") === moment(slot.from).format("hh:mm a"))+1)}
+                            options={gapTimes.slice(gapTimes.findIndex(time => time.format("hh:mm a") === getMoment(slot.from).format("hh:mm a"))+1)}
                             onChange={handleUpdateSlot("to", slot.id)}
-                            value={moment(slot.to).format("hh:mm a").toLowerCase()}
+                            value={getMoment(slot.to).format("hh:mm a").toLowerCase()}
                         />
                         <Image
                             className="md:ml-[29px] cursor-pointer"

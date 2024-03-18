@@ -23,6 +23,7 @@ import peopleSvg from "@/public/people.svg"
 import crossSvg from "@/public/cross.svg"
 import notesSvg from "@/public/notes.svg"
 import clockSvg from "@/public/clock.svg"
+import { formatMoment } from "../_utils/date"
 
 const Booking = () => {
     const { selectedSlots, setSelectedSlots, selectedEvent, fetchBookings, setSelectedEvent } = useCalendarContext()
@@ -68,8 +69,8 @@ const Booking = () => {
                 notes,
                 title: header,
                 uuids: [selectedUser.uid, user?.uid || ""],
-                endTime: selectedSlots.endTime.toISOString(),
-                startTime: selectedSlots.startTime.toISOString(),
+                endTime: formatMoment(selectedSlots.endTime),
+                startTime: formatMoment(selectedSlots.startTime),
             })
             await fetchBookings()
             setLoading(false)

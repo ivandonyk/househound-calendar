@@ -7,6 +7,8 @@ import moment from "moment"
 
 import { ICalendarDayProps } from "@/app/_types/components"
 
+import { getMoment } from "@/app/_utils/date"
+
 const CalendarDay: React.FC<ICalendarDayProps> = ({ 
     selectedDate, 
     setSelectedDate,
@@ -18,7 +20,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
     useEffect(() => {
         if(availabilities?.length) {
             const todaysAvailabilities = availabilities.filter(
-                availability => moment(availability.from).format("dddd DD yyyy") === props.day.format("dddd DD yyyy")
+                availability => getMoment(availability.from).format("dddd DD yyyy") === props.day.format("dddd DD yyyy")
             )
             if(todaysAvailabilities?.length) setAvailable(true)
         }

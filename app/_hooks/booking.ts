@@ -28,6 +28,8 @@ import { Role } from "@/app/_constants/constants"
 
 import { IAvailability, IBooking } from "@/app/_types/entities"
 
+import { formatMoment, getMoment } from "@/app/_utils/date"
+
 export const useBookings = (id: string) => {
     const [bookings, setBookings] = useState<IBooking[]>([])
     const [loading, setLoading] = useState(false)
@@ -39,7 +41,14 @@ export const useBookings = (id: string) => {
                 where("uuids", "array-contains", id)
             ))
             const list: IBooking[] = []
-            snapshot?.forEach(doc => list.push({ ...(doc.data() as unknown as IBooking), id: doc.id }))
+            snapshot?.forEach(doc => {
+                const booking = doc.data() as unknown as IBooking
+                list.push({ 
+                    ...booking, 
+                    startTime: formatMoment(getMoment(booking.startTime)),
+                    id: doc.id 
+                })
+            })
             setBookings(list)
             setLoading(false)
         } catch (error) {
@@ -62,29 +71,29 @@ export const useCreateBooking = () => {
     const addBooking = async(payload: ICreateBookingPayload) => {
         try {
             setLoading(true)
-            if(role === Role.Client) {
-                const snapshot = await getDocs(query(
-                    collection(db, "availability"), 
-                    where("uid", "==", payload.uuids.find(id => id !== user?.uid)),
-                ))
-                let availabilities: any[] = [];
-                snapshot.forEach(doc => {
-                    availabilities.push(doc.data() as unknown as IAvailability)
-                })
-                const dates = availabilities.map(availability => ({ 
-                    ...availability,
-                    from: moment(availability.from.seconds*1000),
-                    to: moment(availability.to.seconds*1000) 
-                }))
-                const availableDate = dates.find(date => 
-                    moment(date.from).isSameOrBefore(moment(payload.startTime))
-                    && moment(date.to).isSameOrAfter(moment(payload.endTime))
-                )
-                if(!availableDate) {
-                    setLoading(false)
-                    return toast.error("Agent not available on selected date")
-                }
-            }
+            // if(role === Role.Client) {
+            //     const snapshot = await getDocs(query(
+            //         collection(db, "availability"), 
+            //         where("uid", "==", payload.uuids.find(id => id !== user?.uid)),
+            //     ))
+            //     let availabilities: any[] = [];
+            //     snapshot.forEach(doc => {
+            //         availabilities.push(doc.data() as unknown as IAvailability)
+            //     })
+            //     const dates = availabilities.map(availability => ({ 
+            //         ...availability,
+            //         from: moment(availability.from.seconds*1000),
+            //         to: moment(availability.to.seconds*1000) 
+            //     }))
+            //     const availableDate = dates.find(date => 
+            //         moment(date.from).isSameOrBefore(moment(payload.startTime))
+            //         && moment(date.to).isSameOrAfter(moment(payload.endTime))
+            //     )
+            //     if(!availableDate) {
+            //         setLoading(false)
+            //         return toast.error("Agent not available on selected date")
+            //     }
+            // }
             await addDoc(collection(db, "bookings"), payload)
             setLoading(false)
         } catch (error) {

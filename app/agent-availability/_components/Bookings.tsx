@@ -12,6 +12,7 @@ import { IBookingsProps, IDailyParsedEvent } from "@/app/_types/components"
 import { IBooking } from "@/app/_types/entities"
 
 import whiteDeleteSvg from "@/public/whiteDelete.svg"
+import { getMoment } from "@/app/_utils/date"
 
 const Bookings: React.FC<IBookingsProps> = ({ week }) => {
     const { events } = useCalendarContext()
@@ -22,8 +23,8 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
     useEffect(() => {
         if(events) {
             const filtered = events.filter(event => 
-                moment(event.startTime).isSameOrAfter(week[0])
-                && moment(event.startTime).isSameOrBefore(week[6])
+                getMoment(event.startTime).isSameOrAfter(week[0])
+                && getMoment(event.startTime).isSameOrBefore(week[6])
             )
             setWeeklyEvents(filtered)
         }
@@ -34,8 +35,8 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
         week.forEach(day => {
             const dayEnd = day.clone().set('hour', 23).set("minute", 59).set("second", 59)
             const dailyEvents = weeklyEvents.filter(event => 
-                moment(event.startTime).isSameOrAfter(day)
-                && moment(event.startTime).isSameOrBefore(dayEnd)
+                getMoment(event.startTime).isSameOrAfter(day)
+                && getMoment(event.startTime).isSameOrBefore(dayEnd)
             )
             if(dailyEvents.length) temp.push({
                 date: day,
@@ -58,13 +59,13 @@ const Bookings: React.FC<IBookingsProps> = ({ week }) => {
                 </div>
                 {events
                     .sort((a, b) => {
-                        const momentA = moment(a.startTime)
-                        const momentB = moment(b.startTime)
+                        const momentA = getMoment(a.startTime)
+                        const momentB = getMoment(b.startTime)
                         return momentA.valueOf() - momentB.valueOf()
                     })
                     .map(event => <div className="w-full rounded-md bg-blue-2 text-white flex flex-row px-[15px] py-[10px]">
                     <div className="font-[600] w-[80px] text-[14px] leading-[22px]">
-                        {moment(event.startTime).format("hh:mm a")}
+                        {getMoment(event.startTime).format("hh:mm a")}
                     </div>
                     {/* <div className="font-[400] ml-[15px] text-[14px] leading-[22px]">
                         {event.title}
