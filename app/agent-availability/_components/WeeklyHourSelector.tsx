@@ -128,7 +128,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                     />
                     <Image src={dotSvg} alt="" />
                     <Select
-                        options={gapTimes}
+                        options={from ? gapTimes.slice(gapTimes.findIndex(time => time.format("hh:mm a") === from.format("hh:mm a"))+1) : gapTimes}
                         onChange={date => setTo(date)}
                         value={to ? moment(to).format("hh:mm a").toLowerCase() : ""}
                     />
