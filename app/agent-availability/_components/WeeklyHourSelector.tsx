@@ -48,7 +48,10 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
             }
         }
 
-        setGapTimes(gapTimes)
+        const today = moment()
+        const isToday = day.format("dddd, DD MMMM, yyyy") === moment().format("dddd, DD MMMM, yyyy")
+
+        setGapTimes(gapTimes.filter(time => time.isAfter(today)))
     }, [])
 
     const handleUpdateSlot = (type: "from" | "to", id: string) => (date: Moment) => {
