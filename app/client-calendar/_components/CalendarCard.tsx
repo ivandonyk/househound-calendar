@@ -50,22 +50,21 @@ const CalendarCard = () => {
                     .clone()
                     .add(hour, 'hours')
                     .add(i * 30, 'minutes')
-                if(!gapTimes.filter(time => time.format("hh:mm a") === calcTime.format("hh:mm a"))?.length) gapTimes.push(calcTime)
+                gapTimes.push(calcTime)
             }
         }
         const selectedDatesAvailabilities = availabilities
             .filter(a => moment(a.from).format("DD dddd MMMM yyyy") === selectedDate.format("DD dddd MMMM yyyy"))
         const times = selectedDatesAvailabilities
-            .map(availability => [moment(availability.from).format("hh:mm a"), moment(availability.to).format("hh:mm a")])
+            .map(availability => [moment(availability.from), moment(availability.to)])
         let finalGaps: Moment[]  = [];
-        const gaps = gapTimes
-            .filter(time => !todayBookedSlots.includes(time.format("hh:mm a")))
-        times.map((time)=> {
-            const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[0])
-            const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[1])
+        const gaps = gapTimes.filter(time => !todayBookedSlots.includes(time.format("hh:mm a")))
+        times.forEach(time => {
+            const startIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[0].format("hh:mm a"))
+            const endIndex = gaps.findIndex(gap => gap.format("hh:mm a") === time[1].format("hh:mm a"))
             let tempGaps = [...gaps]
             if(startIndex !== -1) tempGaps = tempGaps.slice(startIndex)
-            if(endIndex !== -1) tempGaps = tempGaps.slice(0, endIndex - startIndex)
+            if(endIndex !== -1) tempGaps = tempGaps.slice(0, endIndex - (startIndex !== -1 ? startIndex : 0))
             finalGaps = [...finalGaps, ...tempGaps]
         })
         finalGaps.sort((a, b) => {
