@@ -37,7 +37,7 @@ const CalendarDay: React.FC<ICalendarDayProps> = ({
                 className={classNames(
                     "!font-[400] !text-[14px] md:!text-[17px] !leading-[22px] md:!leading-[20px]",
                     { "!bg-white !text-blue-4": available && !isPast && !(selectedDate?.format("dddd DD yyyy") === props.day.format("dddd DD yyyy")) },
-                    { "!text-gray-10 pointer-events-none": !available },
+                    { "!text-gray-10 pointer-events-none": !available || isPast },
                     { "!font-[600]": moment().format("dddd DD yyyy") === props.day.format("dddd DD yyyy") },
                     { "!bg-blue-4 !text-white": selectedDate?.format("dddd DD yyyy") === props.day.format("dddd DD yyyy") }
                 )}
