@@ -3,10 +3,26 @@
     .calendar-component td {
         border-color: #FFFFFF50 !important;
     }
-}
 
-.calendar-component td:first-of-type {
-    border-color: transparent !important;
+    .calendar-component .fc-scrollgrid {
+        border-color: transparent !important;
+    }
+    
+    .calendar-component .fc-scrollgrid td:last-of-type {
+        border-right-color: transparent !important;
+    }
+    
+    .calendar-component .fc-scrollgrid-section.fc-scrollgrid-section-body td[role='presentation'] {
+        border-bottom-color: transparent !important;
+    }
+    
+    .calendar-component [role='row']:last-of-type td {
+        border-bottom-color: transparent !important;
+    }
+
+    .calendar-component td:first-of-type {
+        border-color: transparent !important;
+    }
 }
 
 .calendar-component table, th {
@@ -18,9 +34,9 @@
     border-right: none !important;
 }
 
-.calendar-component .fc-scrollgrid td:first-child {
+/* .calendar-component .fc-scrollgrid td:first-child {
     border-top: none !important;
-}
+} */
 
 @media only screen and (min-width: 768px) {
     .calendar-component .fc-scrollgrid td {
@@ -36,21 +52,6 @@
     border-bottom: none !important;
 }
 
-.calendar-component .fc-scrollgrid {
-    border-color: transparent !important;
-}
-
-.calendar-component .fc-scrollgrid td:last-of-type {
-    border-right-color: transparent !important;
-}
-
-.calendar-component .fc-scrollgrid-section.fc-scrollgrid-section-body td[role='presentation'] {
-    border-bottom-color: transparent !important;
-}
-
-.calendar-component [role='row']:last-of-type td {
-    border-bottom-color: transparent !important;
-}
 
 .calendar-component .fc-timegrid-body table tbody tr:first-of-type td {
     border-top: none !important;
@@ -94,7 +95,7 @@
 }
 
 .calendar-component .fc-day-today {
-  background-color:inherit !important;
+  background-color: inherit !important;
 }
 
 .calendar-component .fc-timegrid-slot-label-frame {
@@ -102,6 +103,11 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .calendar-component td {
+       border-bottom: none !important;
+       border-top: none !important;
+    }
+
     .fc-timegrid-event {
         padding: 0px !important;
         margin: 0px !important;
@@ -116,8 +122,29 @@
         border: none !important;
     }
 
+    .fc-timegrid-slots tr {
+        position: relative !important;
+    }
+
+    .fc-timegrid-slots tr td:last-of-type::before {
+        content: ' ';
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 0.5px;
+        background: linear-gradient(to right, white, transparent) 100% 0% !important;
+    }
+
+    .fc-timegrid-slots tr:last-of-type td:last-of-type::before {
+        display: none !important;
+    }
+
+    .fc-timegrid-slots tr:last-of-type {
+        border: none !important;
+    }
+
     td {
-        border: 0.5px solid #FFFFFF70 !important;
+        border: 0.5px solid white !important;
         border-image: linear-gradient(to right, white, transparent) 100% 0% !important;
     }
 
@@ -126,8 +153,11 @@
     }
 
     .fc-timegrid-slot-label-frame {
-        border-bottom: 0.5px solid #FFFFFF70 !important;
-        margin-bottom: -0.5px;
+        border-bottom: 0.5px solid #FFFFFF !important;
+    }
+
+    .fc-timegrid-slots tr:last-of-type td div {
+        border-bottom: none !important;
     }
 
     .fc-timegrid-slot-label-cushion {
