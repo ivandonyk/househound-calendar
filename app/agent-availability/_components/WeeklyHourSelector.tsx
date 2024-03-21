@@ -151,7 +151,7 @@ const WeeklyHourSelector: React.FC<IWeeklyHourSelectorProps> = ({
                 </div>: <></>}
             </div>
             <div className={classNames(
-                "flex justify-center items-center relative ml-auto",
+                "flex justify-center items-center relative mr-6 ml-auto",
                 { "max-h-[30px] md:max-h-[44px]": expanded },
                 { "max-h-[18px] md:max-h-[20px]": !expanded },
             )}>

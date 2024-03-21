@@ -70,7 +70,7 @@ const AvailabilityCard = () => {
                         Weekly hours
                     </div>
                 </div>
-                <div className="overflow-auto">
+                <div className="blue-scrollbar overflow-auto">
                     {week?.map(day => <WeeklyHourSelector day={day} />)}
                 </div>
             </div>

@@ -1,7 +1,8 @@
 
-
-.calendar-component td {
-    border-color: #FFFFFF50 !important;
+@media only screen and (min-width: 768px) {
+    .calendar-component td {
+        border-color: #FFFFFF50 !important;
+    }
 }
 
 .calendar-component td:first-of-type {
@@ -15,6 +16,10 @@
 
 .calendar-component .fc-scrollgrid td:last-of-type {
     border-right: none !important;
+}
+
+.calendar-component .fc-scrollgrid td:first-child {
+    border-top: none !important;
 }
 
 @media only screen and (min-width: 768px) {
@@ -112,17 +117,17 @@
     }
 
     td {
-        border: 0.5px solid !important;
-        border-image-source: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%) !important;
+        border: 0.5px solid #FFFFFF70 !important;
+        border-image: linear-gradient(to right, white, transparent) 100% 0% !important;
     }
 
     .fc-timegrid-axis {
         border: 0.5px solid !important;
-        border-image-source: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%) !important;
     }
 
     .fc-timegrid-slot-label-frame {
         border-bottom: 0.5px solid #FFFFFF70 !important;
+        margin-bottom: -0.5px;
     }
 
     .fc-timegrid-slot-label-cushion {

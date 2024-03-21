@@ -117,7 +117,7 @@ const Calendar: React.FC<ICalendarProps> = () => {
                     height="100%"
                 />
             </div>
-            <div className='md:hidden w-full h-full overflow-auto p-4'>
+            <div className='md:hidden w-full h-full overflow-auto blue-scrollbar p-4'>
                 <div className=" w-full">
                     <div className='w-[100%] md:hidden'>
                         <DateCalendar

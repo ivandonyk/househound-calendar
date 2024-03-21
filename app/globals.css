@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.white-scrollbar {
+    scrollbar-color: #FFFFFF white !important;
+}
+
+.blue-scrollbar {
+    scrollbar-color: #448BC5 #448BC5 !important;
+}

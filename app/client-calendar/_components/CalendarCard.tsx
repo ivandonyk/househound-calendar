@@ -169,7 +169,7 @@ const CalendarCard = () => {
                             Create
                         </div>
                     </div> : <></>}
-                    <div className='w-full flex flex-col gap-[11px] md:pl-[39px] h-[250px] overflow-auto'>
+                    <div className='w-full flex flex-col gap-[11px] md:pl-[39px] h-[250px] white-scrollbar overflow-auto'>
                         {gapTimes.map(time => <div
                             key={time.toISOString()}
                             onClick={() => setSelectedSlot(time)}
