@@ -131,7 +131,7 @@
         position: absolute;
         bottom: 0px;
         width: 100%;
-        height: 0.5px;
+        height: 0.53px;
         background: linear-gradient(to right, white, transparent) 100% 0% !important;
     }
 
@@ -144,16 +144,16 @@
     }
 
     td {
-        border: 0.5px solid white !important;
+        border: 0.53px solid white !important;
         border-image: linear-gradient(to right, white, transparent) 100% 0% !important;
     }
 
     .fc-timegrid-axis {
-        border: 0.5px solid !important;
+        border: 0.53px solid !important;
     }
 
     .fc-timegrid-slot-label-frame {
-        border-bottom: 0.5px solid #FFFFFF !important;
+        border-bottom: 0.53px solid #FFFFFF !important;
     }
 
     .fc-timegrid-slots tr:last-of-type td div {
